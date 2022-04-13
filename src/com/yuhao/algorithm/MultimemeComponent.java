@@ -4,6 +4,7 @@ import com.yuhao.algorithm.crossover.Crossover;
 import com.yuhao.algorithm.crossover.OnePTX;
 import com.yuhao.algorithm.crossover.TwoPTX;
 import com.yuhao.algorithm.crossover.UX;
+import com.yuhao.algorithm.localsearch.*;
 import com.yuhao.algorithm.mutation_or_ruinrecreate.BitFlip;
 import com.yuhao.algorithm.mutation_or_ruinrecreate.MutationRuinRecreate;
 import com.yuhao.data.Memeplex;
@@ -102,23 +103,23 @@ public class MultimemeComponent {
     }
 
     private void assignParentMemeplexToChild(int idParent, int idChild) {
-        Memeplex parentMemeplex = m_populationParent.getMemeplex(idParent);
-        Memeplex childMemeplex = m_populationChildren.getMemeplex(idChild);
+        Memeplex memeplexParent = m_populationParent.getMemeplex(idParent);
+        Memeplex memeplexChild = m_populationChildren.getMemeplex(idChild);
 
-        childMemeplex.setCrossoverOption((parentMemeplex.getCrossoverOption()));
-        childMemeplex.setMutationOption((parentMemeplex.getMutationOption()));
-        childMemeplex.setIoMOption((parentMemeplex.getIoMOption()));
-        childMemeplex.setLocalSearchOption((parentMemeplex.getLocalSearchOption()));
-        childMemeplex.setDoSOption((parentMemeplex.getDoSOption()));
+        memeplexChild.setCrossoverOption((memeplexParent.getCrossoverOption()));
+        memeplexChild.setMutationOption((memeplexParent.getMutationOption()));
+        memeplexChild.setIoMOption((memeplexParent.getIoMOption()));
+        memeplexChild.setLocalSearchOption((memeplexParent.getLocalSearchOption()));
+        memeplexChild.setDoSOption((memeplexParent.getDoSOption()));
     }
 
     public void applyMutationOrRuinRecreateWithIoM(int idChild) throws ExecutionControl.NotImplementedException {
         int idIoM = m_populationChildren.getMemeplex(idChild).getIoMOption();
         int intensityOfMutation = getIoMOnId(idIoM);
         int idMutationOrRuinRecreate = m_populationChildren.getMemeplex(idChild).getMutationOption();
-        MutationRuinRecreate mOrRR = getMutationOrRuinRecreateOnId(idMutationOrRuinRecreate);
+        MutationRuinRecreate mutationRuinRecreate = getMutationOrRuinRecreateOnId(idMutationOrRuinRecreate);
         for (int i = 0; i < intensityOfMutation; i++) {
-            mOrRR.applyMutationOrRuinRecreate(m_rnd, m_problem, m_populationChildren, idChild);
+            mutationRuinRecreate.applyMutationOrRuinRecreate(m_rnd, m_problem, m_populationChildren, idChild);
         }
     }
 
@@ -141,11 +142,25 @@ public class MultimemeComponent {
         }
     }
 
+    public void applyLocalSearchWithDoS(int idChild) throws ExecutionControl.NotImplementedException {
+        int idDoS = m_populationChildren.getMemeplex(idChild).getDoSOption();
+        int depthOfSearch = getDoSOnId(idDoS);
+        int idLocalSearch = m_populationChildren.getMemeplex(idChild).getLocalSearchOption();
+        LocalSearch localSearch = getLocalSearchOnId(idLocalSearch);
+        for (int i = 0; i < depthOfSearch; i++) {
+            localSearch.applyLocalSearch(m_rnd, m_problem, m_populationChildren, this, idChild);
+        }
+    }
+
+    public void applyPopulationReplacement() {
+        
+    }
+
     private Crossover getCrossoverOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new OnePTX();
             case 1 -> new TwoPTX();
-            case 2 -> new UX();
+            case 2 -> new UX(); // TODO: more crossover options (if possible)
             default -> throw new ExecutionControl.NotImplementedException("Invalid crossover id");
         };
     }
@@ -153,8 +168,8 @@ public class MultimemeComponent {
     private MutationRuinRecreate getMutationOrRuinRecreateOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new BitFlip();
-            case 1 -> new BitFlip(); // TODO NEXT: more mutation or ruinrecreate options
-            case 2 -> new BitFlip(); // TODO NEXT: more mutation or ruinrecreate options
+            case 1 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
+            case 2 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
@@ -168,6 +183,36 @@ public class MultimemeComponent {
             case 4 -> 5;
             case 5 -> 6;
             default -> throw new ExecutionControl.NotImplementedException("Invalid IoM id");
+        };
+    }
+
+    private LocalSearch getLocalSearchOnId(int id) throws ExecutionControl.NotImplementedException {
+        return switch (id) {
+            case 0 -> new RMHC_OI();
+            case 1 -> new RMHC_IE();
+            case 2 -> new DBHC_OI();
+            case 3 -> new DBHC_IE();
+            case 4 -> new SAHC_OI();
+            case 5 -> new SAHC_IE();
+            case 6 -> new GAHC_OI();
+            case 7 -> new GAHC_IE();
+            case 8 -> new GAHC_Advanced_OI();
+            case 9 -> new GAHC_Advanced_IE();
+            case 10 -> new LeastImprovement_OI();
+            case 11 -> new LeastImprovement_IE(); // TODO: more local search options
+            default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
+        };
+    }
+
+    private int getDoSOnId(int id) throws ExecutionControl.NotImplementedException {
+        return switch (id) {
+            case 0 -> 1;
+            case 1 -> 2;
+            case 2 -> 3;
+            case 3 -> 4;
+            case 4 -> 5;
+            case 5 -> 6;
+            default -> throw new ExecutionControl.NotImplementedException("Invalid DoS id");
         };
     }
 }

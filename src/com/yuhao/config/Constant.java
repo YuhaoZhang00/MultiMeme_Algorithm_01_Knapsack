@@ -25,7 +25,14 @@ public class Constant {
      * <br> 1 : 2-PTX (Two Point Crossover)
      * <br> 2 : UX (Uniform Crossover)
      */
-    public static int[] CROSSOVER_OPTIONS_TO_USE = {0, 1, 2}; // should set more than 2 options // TODO: this ok?
+    public static int[] CROSSOVER_OPTIONS_TO_USE = {0, 1, 2};
+    // all of the options should set more than 2 options // TODO: this ok?
+    /**
+     * Mutation OR Ruin-Recreate options to use
+     * <p> 0 : Bit flip [Mutation]
+     * <br> 1 : Bit flip [Mutation] // TODO: subject to change
+     * <br> 2 : Bit flip [Mutation] // TODO: subject to change
+     */
     public static int[] MUTATION_OPTIONS_TO_USE = {0, 1, 2};
     /**
      * Intensity of Mutation options to use
@@ -37,7 +44,24 @@ public class Constant {
      * <br> 5 : mutation or ruin_recreate for 6 times
      */
     public static int[] INTENSITY_OF_MUTATION_OPTIONS_TO_USE = {0, 1, 2, 3, 4, 5};
-    public static int[] LOCAL_SEARCH_OPTIONS_TO_USE = {0, 1, 2, 3, 4, 5};
+    /**
+     * Local search options to use
+     * <p> 0 : RMHC_OI (Random Mutation Hill Climbing accepting Only Improving moves)
+     * <br> 1 : RMHC_IE (Random Mutation Hill Climbing accepting Improving or Equal moves)
+     * <br> 2 : DBHC_OI (Davis' Bit Hill Climbing accepting Only Improving moves)
+     * <br> 3 : DBHC_IE (Davis' Bit Hill Climbing accepting Improving or Equal moves)
+     * <br> 4 : SAHC_OI (Steepest Ascent / Best Improvement Hill Climbing accepting Only Improving moves)
+     * <br> 5 : SAHC_IE (Steepest Ascent / Best Improvement Hill Climbing accepting Improving or Equal moves)
+     * <br> 6 : GAHC_OI (Gradient Ascent / Next Ascent / First Improvement Hill Climbing accepting Only Improving
+     * moves)
+     * <br> 7 : GAHC_IE (Gradient Ascent / Next Ascent / First Improvement Hill Climbing accepting Improving or Equal
+     * moves)
+     * <br> 8 : GAHC_Advanced_OI (an advanced First Improvement Hill Climbing accepting Only Improving moves)
+     * <br> 9 : GAHC_Advanced_IE (an advanced First Improvement Hill Climbing accepting Improving or Equal moves)
+     * <br> 10 : LeastImprovement_OI (Least Improvement Hill Climbing accepting Only Improving moves)
+     * <br> 11 : LeastImprovement_IE (Least Improvement Hill Climbing accepting Improving or Equal moves)
+     */
+    public static int[] LOCAL_SEARCH_OPTIONS_TO_USE = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     /**
      * Depth of Search options to use
      * <p> 0 : local search for 1 times

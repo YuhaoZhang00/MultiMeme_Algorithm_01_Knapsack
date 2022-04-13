@@ -8,6 +8,8 @@ import com.yuhao.utils.MyFileReader;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -37,7 +39,6 @@ import static com.yuhao.config.Constant.*;
 public class CourseworkRunner {
 
     public static void main(String[] args) {
-
         /*
         [Initialisation]
         TODO: Comment here
@@ -97,23 +98,23 @@ public class CourseworkRunner {
 
             try {
                 algorithm.applyCrossoverWithIoM(idParent1, idParent2, idChild1, idChild2);
+
                 algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
+
                 algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
                 algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
+
                 algorithm.applyMutationOfMemeplex(idChild1);
                 algorithm.applyMutationOfMemeplex(idChild2);
 
-                // TODO: comment this out
-                testIndividualGenerationAndObjectiveValue(problem, populationParent, populationChildren, algorithm);
-
-                // applyLocalSearchForChildDependentOnMeme(c1, 1);
-                // applyLocalSearchForChildDependentOnMeme(c2, 1);
+                algorithm.applyLocalSearchWithDoS(idChild1);
+                algorithm.applyLocalSearchWithDoS(idChild2);
             } catch (ExecutionControl.NotImplementedException e) {
                 e.printStackTrace();
             }
         }
 
-        //        replacement.doReplacement(problem, POPULATION_SIZE);
+        algorithm.applyPopulationReplacement();
 
         //        }
 
