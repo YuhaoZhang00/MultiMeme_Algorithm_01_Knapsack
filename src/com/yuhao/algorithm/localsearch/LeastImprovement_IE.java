@@ -17,12 +17,12 @@ public class LeastImprovement_IE extends LocalSearch {
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
-        int currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         int lowestObjectiveValue = Integer.MAX_VALUE;
         int bestIndex = -1;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
-            int neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+            double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue >= currentObjectiveValue && neighborObjectiveValue < lowestObjectiveValue) {
                 bestIndex = i;
                 currentObjectiveValue = neighborObjectiveValue;

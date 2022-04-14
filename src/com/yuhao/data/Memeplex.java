@@ -12,7 +12,7 @@ import static com.yuhao.config.Constant.*;
  * <br> L : local search
  * <br> D : DoS
  * <br> Inspired by : Ender Ozcan et al., A Self-adaptive Multimeme Memetic Algorithm Co-evolving Utility Scores to Control
- * Genetic Operators and Their Parameter Settings, pp. 11-12 (Link :
+ * Genetic Operators and Their Parameter Settings, pp. 11-13 (Link :
  * http://www.cs.nott.ac.uk/~pszeo/docs/publications/multimemeAlgorithmChesc.pdf)
  */
 public class Memeplex {

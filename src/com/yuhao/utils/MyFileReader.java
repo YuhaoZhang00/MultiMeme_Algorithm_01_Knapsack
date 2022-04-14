@@ -19,28 +19,28 @@ public class MyFileReader {
 	 *         {@code returnValue[2]} is profits, {@code returnValue[3]} is weights,
 	 * @throws IOException
 	 */
-	public LinkedList<LinkedList<Integer>> readFromFile() throws IOException {
+	public LinkedList<LinkedList<Double>> readFromFile() throws IOException {
 		File file = new File(Constant.FILE_TO_READ);
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
 		String line = br.readLine();
 		String[] lineComponent = line.split(" ");
 
-		LinkedList<Integer> numberOfItems = new LinkedList<Integer>();
-		numberOfItems.add(Integer.parseInt(lineComponent[0]));
-		LinkedList<Integer> knapsackCapacity = new LinkedList<Integer>();
-		knapsackCapacity.add(Integer.parseInt(lineComponent[1]));
+		LinkedList<Double> numberOfItems = new LinkedList<>();
+		numberOfItems.add(Double.parseDouble(lineComponent[0]));
+		LinkedList<Double> knapsackCapacity = new LinkedList<>();
+		knapsackCapacity.add(Double.parseDouble(lineComponent[1]));
 
-		LinkedList<Integer> profits = new LinkedList<Integer>();
-		LinkedList<Integer> weights = new LinkedList<Integer>();
+		LinkedList<Double> profits = new LinkedList<>();
+		LinkedList<Double> weights = new LinkedList<>();
 		while ((line = br.readLine()) != null) {
 			lineComponent = line.split(" ");
-			profits.add(Integer.parseInt(lineComponent[0]));
-			weights.add(Integer.parseInt(lineComponent[1]));
+			profits.add(Double.parseDouble(lineComponent[0]));
+			weights.add(Double.parseDouble(lineComponent[1]));
 		}
 		br.close();
 
-		LinkedList<LinkedList<Integer>> returnValue = new LinkedList<LinkedList<Integer>>();
+		LinkedList<LinkedList<Double>> returnValue = new LinkedList<>();
 		returnValue.add(numberOfItems);
 		returnValue.add(knapsackCapacity);
 		returnValue.add(profits);

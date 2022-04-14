@@ -32,11 +32,12 @@ import static com.yuhao.config.Constant.*;
  * end [Main Loop]
  * </code>
  * </pre>
- * Inspired by : Ender Ozcan et al., A Self-adaptive Multimeme Memetic Algorithm Co-evolving Utility Scores to
- * Control Genetic Operators and Their Parameter Settings, pp. 11-12 (Link :
- * http://www.cs.nott.ac.uk/~pszeo/docs/publications/multimemeAlgorithmChesc.pdf)
+ * Inspired by : Ender Ozcan et al., A Self-adaptive Multimeme Memetic Algorithm Co-evolving Utility Scores to Control
+ * Genetic Operators and Their Parameter Settings, pp. 11-13 (Link : http://www.cs.nott.ac.uk/~pszeo/docs/publications/multimemeAlgorithmChesc.pdf)
  */
 public class CourseworkRunner {
+
+    // TODO: delta evaluation
 
     public static void main(String[] args) {
         /*
@@ -51,7 +52,7 @@ public class CourseworkRunner {
         }
 
         // read from file
-        LinkedList<LinkedList<Integer>> infoFromFile = new LinkedList<LinkedList<Integer>>();
+        LinkedList<LinkedList<Double>> infoFromFile = new LinkedList<>();
         MyFileReader aa = new MyFileReader();
         try {
             infoFromFile = aa.readFromFile();
@@ -61,13 +62,14 @@ public class CourseworkRunner {
 
         // TODO: initialisation of problem and population should be put into `MultimemeComponent`
 
-        Problem problem = new Problem(infoFromFile.get(0).get(0), infoFromFile.get(1).get(0), infoFromFile.get(2),
-                infoFromFile.get(3));
+        Problem problem =
+                new Problem(infoFromFile.get(0).get(0).intValue(), infoFromFile.get(1).get(0), infoFromFile.get(2),
+                        infoFromFile.get(3));
 
-        Population populationParent = new Population(rnd, infoFromFile.get(0).get(0), true);
+        Population populationParent = new Population(rnd, infoFromFile.get(0).get(0).intValue(), true);
         // TODO: random hill climbing
 
-        Population populationChildren = new Population(rnd, infoFromFile.get(0).get(0), false);
+        Population populationChildren = new Population(rnd, infoFromFile.get(0).get(0).intValue(), false);
 
         MultimemeComponent algorithm = new MultimemeComponent(rnd, problem, populationParent, populationChildren);
 
@@ -80,43 +82,42 @@ public class CourseworkRunner {
         TODO: Comment here
          */
 
-        //        while (terminationCirteriaNotMet) {
+        while (! algorithm.terminationCirteriaMet()) {
+            for (int i = 0; i < POPULATION_SIZE; i += 2) {
+                int idParent1 = algorithm.applyTournamentSelection();
+                int idParent2 = algorithm.applyTournamentSelection();
+                int idChild1 = i;
+                int idChild2 = i + 1;
 
-        for (int i = 0; i < POPULATION_SIZE; i += 2) {
-            int idParent1 = algorithm.applyTournamentSelection();
-            int idParent2 = algorithm.applyTournamentSelection();
-            int idChild1 = i;
-            int idChild2 = i + 1;
+                // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
+                // i.e. parent1 has a better fitness
+                if (algorithm.getObjectiveValue(true, idParent1) < algorithm.getObjectiveValue(true, idParent2)) {
+                    int temp = idParent1;
+                    idParent1 = idParent2;
+                    idParent2 = temp;
+                }
 
-            // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
-            // i.e. parent1 has a better fitness
-            if (algorithm.getObjectiveValue(true, idParent1) < algorithm.getObjectiveValue(true, idParent2)) {
-                int temp = idParent1;
-                idParent1 = idParent2;
-                idParent2 = temp;
+                try {
+                    algorithm.applyCrossoverWithIoM(idParent1, idParent2, idChild1, idChild2);
+
+                    algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
+
+                    algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
+                    algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
+
+                    algorithm.applyMutationOfMemeplex(idChild1);
+                    algorithm.applyMutationOfMemeplex(idChild2);
+
+                    algorithm.applyLocalSearchWithDoS(idChild1);
+                    algorithm.applyLocalSearchWithDoS(idChild2);
+                } catch (ExecutionControl.NotImplementedException e) {
+                    e.printStackTrace();
+                }
             }
 
-            try {
-                algorithm.applyCrossoverWithIoM(idParent1, idParent2, idChild1, idChild2);
+            algorithm.applyPopulationReplacement();
 
-                algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
-
-                algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
-                algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
-
-                algorithm.applyMutationOfMemeplex(idChild1);
-                algorithm.applyMutationOfMemeplex(idChild2);
-
-                algorithm.applyLocalSearchWithDoS(idChild1);
-                algorithm.applyLocalSearchWithDoS(idChild2);
-            } catch (ExecutionControl.NotImplementedException e) {
-                e.printStackTrace();
-            }
         }
-
-        algorithm.applyPopulationReplacement();
-
-        //        }
 
         // TODO: comment this out
         testIndividualGenerationAndObjectiveValue(problem, populationParent, populationChildren, algorithm);
@@ -130,9 +131,9 @@ public class CourseworkRunner {
                                                                   MultimemeComponent algorithm) {
         System.out.println("===testIndividualGenerationAndObjectiveValue===");
         System.out.println("---problem---");
-        System.out.println("number of items : " + Integer.toString(problem.getNumOfItems()));
-        System.out.println("knapsack capacity : " + Integer.toString(problem.getKnapsackCapacity()));
-        System.out.println("min profit : " + Integer.toString(problem.getMinProfit()));
+        System.out.println("number of items : " + problem.getNumOfItems());
+        System.out.println("knapsack capacity : " + problem.getKnapsackCapacity());
+        System.out.println("min profit : " + problem.getMinProfit());
         System.out.println("---populationParent---");
         for (int i = 0; i < POPULATION_SIZE; i++) {
             System.out.print(i + " : ");
@@ -146,7 +147,7 @@ public class CourseworkRunner {
             System.out.print(m.getIoMOption() + " ");
             System.out.print(m.getLocalSearchOption() + " ");
             System.out.print(m.getDoSOption() + " ");
-            System.out.println("- " + Integer.toString(algorithm.getObjectiveValue(true, i)));
+            System.out.println("- " + algorithm.getObjectiveValue(true, i));
         }
         System.out.println("---populationChildren---");
         for (int i = 0; i < POPULATION_SIZE; i++) {
@@ -161,7 +162,7 @@ public class CourseworkRunner {
             System.out.print(m.getIoMOption() + " ");
             System.out.print(m.getLocalSearchOption() + " ");
             System.out.print(m.getDoSOption() + " ");
-            System.out.println("- " + Integer.toString(algorithm.getObjectiveValue(false, i)));
+            System.out.println("- " + algorithm.getObjectiveValue(false, i));
         }
         System.out.println("===end===");
     }

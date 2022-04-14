@@ -1,23 +1,25 @@
 package com.yuhao.config;
 
 public class Constant {
-    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
-    //	public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
-    //	public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
-    //	public static String FILE_TO_READ = "resource/hiddenInstances/hidden1_5_80.txt";
-    //	public static String FILE_TO_READ = "resource/hiddenInstances/hidden2_7_50.txt";
-    //	public static String FILE_TO_READ = "resource/hiddenInstances/hidden3_10_60.txt";
-    //	public static String FILE_TO_READ = "resource/hiddenInstances/hidden4_15_375.txt";
-    //	public static String FILE_TO_READ = "resource/hiddenInstances/hidden5_23_10000.txt";
-    //	public static String FILE_TO_READ = "resource/otherInstances/test.txt";
+//    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
+//    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
+//    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden1_5_80.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden2_7_50.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden3_10_60.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden4_15_375.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden5_23_10000.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2614-f.txt";
 
     public static String FILE_TO_WRITE = "output/instanceName_n_W_trialID_output.txt"; // TODO: change
 
     public static boolean IS_USE_SEED = true;
     public static long SEED = 123456;
 
-    public static int POPULATION_SIZE = 2; // suggested to be a even number - easy for crossover // TODO: this ok?
-    public static int TOURNAMENT_SIZE = 2;
+    public static int LOOPS_TO_PERFORM = 300;
+
+    public static int POPULATION_SIZE = 20; // suggested to be a even number - easy for crossover // TODO: this ok?
+    public static int TOURNAMENT_SIZE = 3;
 
     /**
      * Crossover options to use

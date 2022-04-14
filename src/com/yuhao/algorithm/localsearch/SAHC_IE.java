@@ -17,11 +17,11 @@ public class SAHC_IE extends LocalSearch {
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
-        int highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         int bestIndex = -1;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
-            int neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+            double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue >= highestObjectiveValue) {
                 bestIndex = i;
                 highestObjectiveValue = neighborObjectiveValue;

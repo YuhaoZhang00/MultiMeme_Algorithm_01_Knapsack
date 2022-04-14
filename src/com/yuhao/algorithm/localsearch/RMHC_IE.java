@@ -18,10 +18,10 @@ public class RMHC_IE extends LocalSearch {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         int i = rnd.nextInt(problem.getNumOfItems());
 
-        int currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
 
         chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
-        int neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         if (neighborObjectiveValue >= currentObjectiveValue) {
             return;
         }

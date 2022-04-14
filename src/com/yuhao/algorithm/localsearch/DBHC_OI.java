@@ -30,11 +30,11 @@ public class DBHC_OI extends LocalSearch {
             permutation.set(j, i);
         }
 
-        int highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             int index = permutation.get(i);
             chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
-            int neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+            double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue > highestObjectiveValue) {
                 highestObjectiveValue = neighborObjectiveValue;
             } else {

@@ -19,11 +19,11 @@ public class GAHC_OI extends LocalSearch {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         int j = rnd.nextInt(problem.getNumOfItems());
 
-        int highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        double highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             int index = (i + j) % problem.getNumOfItems();
             chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
-            int neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+            double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue > highestObjectiveValue) {
                 return;
             } else {

@@ -23,6 +23,8 @@ public class MultimemeComponent {
     private Population m_populationParent;
     private Population m_populationChildren;
 
+    private int loopCount = 0;
+
     public MultimemeComponent(Random rnd, Problem problem, Population populationParent, Population populationChildren) {
         m_rnd = rnd;
         m_problem = problem;
@@ -30,9 +32,53 @@ public class MultimemeComponent {
         m_populationChildren = populationChildren;
     }
 
+    private void assignParentChromosomeToChild(int idParent, int idChild) {
+        LinkedList<Integer> chromosomeParent = m_populationParent.getIndividual(idParent);
+        LinkedList<Integer> chromosomeChild = m_populationChildren.getIndividual(idChild);
+        for (int i = 0; i < m_problem.getNumOfItems(); i++) {
+            chromosomeChild.set(i, chromosomeParent.get(i));
+        }
+    }
+
+    private void assignChildChromosomeToParent(int idParent, int idChild) {
+        LinkedList<Integer> chromosomeParent = m_populationParent.getIndividual(idParent);
+        LinkedList<Integer> chromosomeChild = m_populationChildren.getIndividual(idChild);
+        for (int i = 0; i < m_problem.getNumOfItems(); i++) {
+            chromosomeParent.set(i, chromosomeChild.get(i));
+        }
+    }
+
+    private void assignParentMemeplexToChild(int idParent, int idChild) {
+        Memeplex memeplexParent = m_populationParent.getMemeplex(idParent);
+        Memeplex memeplexChild = m_populationChildren.getMemeplex(idChild);
+
+        memeplexChild.setCrossoverOption((memeplexParent.getCrossoverOption()));
+        memeplexChild.setMutationOption((memeplexParent.getMutationOption()));
+        memeplexChild.setIoMOption((memeplexParent.getIoMOption()));
+        memeplexChild.setLocalSearchOption((memeplexParent.getLocalSearchOption()));
+        memeplexChild.setDoSOption((memeplexParent.getDoSOption()));
+    }
+
+    private void assignChildMemeplexToParent(int idParent, int idChild) {
+        Memeplex memeplexParent = m_populationParent.getMemeplex(idParent);
+        Memeplex memeplexChild = m_populationChildren.getMemeplex(idChild);
+
+        memeplexParent.setCrossoverOption((memeplexChild.getCrossoverOption()));
+        memeplexParent.setMutationOption((memeplexChild.getMutationOption()));
+        memeplexParent.setIoMOption((memeplexChild.getIoMOption()));
+        memeplexParent.setLocalSearchOption((memeplexChild.getLocalSearchOption()));
+        memeplexParent.setDoSOption((memeplexChild.getDoSOption()));
+    }
+
+    public boolean terminationCirteriaMet() {
+        loopCount++;
+        if (loopCount <= LOOPS_TO_PERFORM)
+            return false;
+        return true;
+    }
+
     /**
      * Returns the objective value of the given individual
-     *
      * <p> Objective function :
      * <pre>
      * <code>f(s) = totalProfit, (if not exceed bin capacity)
@@ -40,7 +86,7 @@ public class MultimemeComponent {
      * </code>
      * </pre>
      */
-    public int getObjectiveValue(boolean isParent, int individualId) {
+    public double getObjectiveValue(boolean isParent, int individualId) {
         // objective function : f(s) = totalProfit
         LinkedList<Integer> individual;
         if (isParent) {
@@ -48,8 +94,8 @@ public class MultimemeComponent {
         } else {
             individual = m_populationChildren.getIndividual(individualId);
         }
-        int totalWeight = 0;
-        int totalProfit = 0;
+        double totalWeight = 0;
+        double totalProfit = 0;
         for (int i = 0; i < m_problem.getNumOfItems(); i++) {
             if (individual.get(i) == 1) {
                 totalWeight += m_problem.getWeight(i);
@@ -68,7 +114,7 @@ public class MultimemeComponent {
 
     public int applyTournamentSelection() {
         int bestIndex = -1;
-        int bestFitness = -1;
+        double highestObjectiveValue = -Double.MAX_VALUE;
         LinkedList<Integer> selectedIndex = new LinkedList<>();
         for (int i = 0; i < TOURNAMENT_SIZE; i++) {
             int crtIndex;
@@ -76,9 +122,9 @@ public class MultimemeComponent {
                 crtIndex = m_rnd.nextInt(POPULATION_SIZE);
             } while (selectedIndex.contains(crtIndex));
             selectedIndex.add(crtIndex);
-            int fitness = getObjectiveValue(true, crtIndex);
-            if (fitness > bestFitness) {
-                bestFitness = fitness;
+            double currentObjectiveValue = getObjectiveValue(true, crtIndex);
+            if (currentObjectiveValue > highestObjectiveValue) {
+                highestObjectiveValue = currentObjectiveValue;
                 bestIndex = crtIndex;
             }
         }
@@ -102,17 +148,6 @@ public class MultimemeComponent {
         assignParentMemeplexToChild(idParent1, idChild2);
     }
 
-    private void assignParentMemeplexToChild(int idParent, int idChild) {
-        Memeplex memeplexParent = m_populationParent.getMemeplex(idParent);
-        Memeplex memeplexChild = m_populationChildren.getMemeplex(idChild);
-
-        memeplexChild.setCrossoverOption((memeplexParent.getCrossoverOption()));
-        memeplexChild.setMutationOption((memeplexParent.getMutationOption()));
-        memeplexChild.setIoMOption((memeplexParent.getIoMOption()));
-        memeplexChild.setLocalSearchOption((memeplexParent.getLocalSearchOption()));
-        memeplexChild.setDoSOption((memeplexParent.getDoSOption()));
-    }
-
     public void applyMutationOrRuinRecreateWithIoM(int idChild) throws ExecutionControl.NotImplementedException {
         int idIoM = m_populationChildren.getMemeplex(idChild).getIoMOption();
         int intensityOfMutation = getIoMOnId(idIoM);
@@ -124,7 +159,6 @@ public class MultimemeComponent {
     }
 
     public void applyMutationOfMemeplex(int idChild) {
-        System.out.println(idChild);
         if (m_rnd.nextDouble() < INNOVATION_RATE) {
             m_populationChildren.getMemeplex(idChild).setAnotherRandomCrossoverOption();
         }
@@ -152,8 +186,47 @@ public class MultimemeComponent {
         }
     }
 
+    /**
+     * Population replacement - Elitist replacement
+     * <p> Replaces the current population with the offspring and replaces the worst offspring with the best solution
+     * if the best is not contained in the offspring
+     */
     public void applyPopulationReplacement() {
-        
+        double highestObjectiveValueParent = -Double.MAX_VALUE;
+        double highestObjectiveValueChildren = -Double.MAX_VALUE;
+        double lowestObjectiveValueChildren = Double.MAX_VALUE;
+        int bestIndexParent = -1;
+        int worstIndexChildren = -1;
+
+        // loop through the population and find the best parent, the best children, and the worst children
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            double currentObjectiveValueParent = getObjectiveValue(true, i);
+            double currentObjectiveValueChildren = getObjectiveValue(false, i);
+
+            if (currentObjectiveValueParent > highestObjectiveValueParent) {
+                highestObjectiveValueParent = currentObjectiveValueParent;
+                bestIndexParent = i;
+            }
+            if (currentObjectiveValueChildren > highestObjectiveValueChildren) {
+                highestObjectiveValueChildren = currentObjectiveValueChildren;
+            }
+            if (currentObjectiveValueChildren < lowestObjectiveValueChildren) {
+                lowestObjectiveValueChildren = currentObjectiveValueChildren;
+                worstIndexChildren = i;
+            }
+        }
+
+        // if the best solution is in parent population, replace the worst in children with it
+        if (highestObjectiveValueParent > highestObjectiveValueChildren) {
+            assignParentChromosomeToChild(bestIndexParent, worstIndexChildren);
+            assignParentMemeplexToChild(bestIndexParent, worstIndexChildren);
+        }
+
+        // do the replacement, i.e. replace the parent with the children
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            assignChildChromosomeToParent(i, i);
+            assignChildMemeplexToParent(i, i);
+        }
     }
 
     private Crossover getCrossoverOnId(int id) throws ExecutionControl.NotImplementedException {
@@ -170,6 +243,8 @@ public class MultimemeComponent {
             case 0 -> new BitFlip();
             case 1 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
             case 2 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
+            // TODO: HINT: - **a swap of the largest selected item with a smallest item that was not selected**
+            // - **swap between the most valuable selected item with the least valuable item that was not selected**
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
