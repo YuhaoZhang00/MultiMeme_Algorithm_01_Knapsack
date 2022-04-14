@@ -6,7 +6,7 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-    public static String FILE_TO_READ = "resource/otherInstances/2614-f.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2614.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
@@ -52,7 +52,7 @@ public class Constant {
      * <br> [Threat] please make it an EVEN NUMBER, otherwise there will be {@code IndexOutOfBoundsException} when
      * applying crossover
      */
-    public static int POPULATION_SIZE = 10;
+    public static int POPULATION_SIZE = 20;
     /**
      * the tournament size when applying tournament selection on parents
      * <p> [Instruction] an integer indicating the tour size, should be less than {@code POPULATION_SIZE}

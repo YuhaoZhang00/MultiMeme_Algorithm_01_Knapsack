@@ -116,11 +116,6 @@ public class MultimemeComponent {
         memeplexParent.setDoSOption((memeplexChild.getDoSOption()));
     }
 
-    public boolean terminationCirteriaMet() {
-        loopCount++;
-        return loopCount > NUMBER_OF_LOOPS;
-    }
-
     /**
      * Returns the objective value of the given individual
      * <p> Objective function :
@@ -156,6 +151,11 @@ public class MultimemeComponent {
         }
     }
 
+    public boolean terminationCirteriaMet() {
+        loopCount++;
+        return loopCount > NUMBER_OF_LOOPS;
+    }
+
     public int applyTournamentSelection() {
         int bestIndex = -1;
         double highestObjectiveValue = -Double.MAX_VALUE;
@@ -175,16 +175,12 @@ public class MultimemeComponent {
         return bestIndex;
     }
 
-    public void applyCrossoverWithIoM(int idParent1, int idParent2, int idChild1, int idChild2)
+    public void applyCrossover(int idParent1, int idParent2, int idChild1, int idChild2)
             throws ExecutionControl.NotImplementedException {
-        int idIoM = m_populationParent.getMemeplex(idParent1).getIoMOption();
-        int intensityOfMutation = getIoMOnId(idIoM);
         int idCrossover = m_populationParent.getMemeplex(idParent1).getCrossoverOption();
         Crossover crossover = getCrossoverOnId(idCrossover);
-        for (int i = 0; i < intensityOfMutation; i++) {
-            crossover.applyCrossover(m_rnd, m_problem, m_populationParent, m_populationChildren, idParent1, idParent2,
-                    idChild1, idChild2);
-        }
+        crossover.applyCrossover(m_rnd, m_problem, m_populationParent, m_populationChildren, idParent1, idParent2,
+                idChild1, idChild2);
     }
 
     public void applyMemeticSimpleInheritance(int idParent1, int idChild1, int idChild2) {

@@ -12,3 +12,4 @@ public abstract class MutationRuinRecreate {
 }
 
 // TODO: comment for subclass
+// THINK OF: highest weight / lowest weight / highest value per weight
