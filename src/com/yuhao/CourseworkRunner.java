@@ -19,7 +19,7 @@ import static com.yuhao.config.Constant.*;
  * The Multimeme Memetic Algorithm
  *
  * <pre>
- * <code>[Initialisation] Create a population of random individuals; apply a random hill climber to each individual
+ * <code>[Initialisation] Create a population of random individuals
  * [Main Loop] while (termination criteria not satisfied) do
  *     Parent1 <- ApplyTournamentSelection()
  *     Parent2 <- ApplyTournamentSelection()
@@ -40,46 +40,57 @@ public class CourseworkRunner {
     // TODO: delta evaluation
 
     public static void main(String[] args) {
-        MultimemeComponent algorithm = new MultimemeComponent();
+        try {
+            // initialise
+            MultimemeComponent algorithm = new MultimemeComponent();
 
-        testIndividualGenerationAndObjectiveValue(algorithm); // TODO: comment this out
+            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
 
-        while (!algorithm.terminationCirteriaMet()) {
-            for (int i = 0; i < POPULATION_SIZE; i += 2) {
-                int idParent1 = algorithm.applyTournamentSelection();
-                int idParent2 = algorithm.applyTournamentSelection();
-                int idChild1 = i;
-                int idChild2 = i + 1;
+            // main loop
+            while (!algorithm.terminationCirteriaMet()) {
+                for (int i = 0; i < POPULATION_SIZE; i += 2) {
+                    // apply tournament selection to parents
+                    int idParent1 = algorithm.applyTournamentSelection();
+                    int idParent2 = algorithm.applyTournamentSelection();
+                    int idChild1 = i;
+                    int idChild2 = i + 1;
 
-                // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
-                // i.e. parent1 has a better fitness
-                if (algorithm.getObjectiveValue(true, idParent1) < algorithm.getObjectiveValue(true, idParent2)) {
-                    int temp = idParent1;
-                    idParent1 = idParent2;
-                    idParent2 = temp;
-                }
+                    // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
+                    // i.e. parent1 has a better fitness
+                    if (algorithm.getObjectiveValue(true, idParent1) < algorithm.getObjectiveValue(true, idParent2)) {
+                        int temp = idParent1;
+                        idParent1 = idParent2;
+                        idParent2 = temp;
+                    }
 
-                try {
+                    // apply crossover with IoM
                     algorithm.applyCrossoverWithIoM(idParent1, idParent2, idChild1, idChild2);
 
+                    // apply memetic simple inheritance
                     algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
 
+                    // apply mutation / ruin-recreate with IoM for children
                     algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
                     algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
 
+                    // apply mutation of memeplex for children
                     algorithm.applyMutationOfMemeplex(idChild1);
                     algorithm.applyMutationOfMemeplex(idChild2);
 
+                    // apply local search with DoS for children
                     algorithm.applyLocalSearchWithDoS(idChild1);
                     algorithm.applyLocalSearchWithDoS(idChild2);
-                } catch (ExecutionControl.NotImplementedException e) {
-                    e.printStackTrace();
-                }
-            }
-            algorithm.applyPopulationReplacement();
-        }
 
-        testIndividualGenerationAndObjectiveValue(algorithm); // TODO: comment this out
+                }
+                // apply elitist population replacement
+                algorithm.applyPopulationReplacement();
+            }
+
+            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+
+        } catch (ExecutionControl.NotImplementedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -50,7 +50,7 @@ public class MyFileReader {
 
 	// TODO
 	public void writeToFile() throws IOException {
-		File file = new File(Constant.FILE_TO_WRITE);
+		File file = new File(Constant.FOLDER_TO_WRITE); // TODO: wrong!
 		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 		bw.write("aaa");
 		bw.newLine();

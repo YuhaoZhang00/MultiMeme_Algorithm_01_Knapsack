@@ -33,6 +33,7 @@ public class Memeplex {
     }
 
     public void setAnotherRandomCrossoverOption() {
+        if (CROSSOVER_OPTIONS_TO_USE.length == 1) return;
         int option;
         do {
             option = m_rnd.nextInt(CROSSOVER_OPTIONS_TO_USE.length);
@@ -49,6 +50,7 @@ public class Memeplex {
     }
 
     public void setAnotherRandomMutationOption() {
+        if (MUTATION_OPTIONS_TO_USE.length == 1) return;
         int option;
         do {
             option = m_rnd.nextInt(MUTATION_OPTIONS_TO_USE.length);
@@ -65,6 +67,7 @@ public class Memeplex {
     }
 
     public void setAnotherRandomIoMOption() {
+        if (INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length == 1) return;
         int option;
         do {
             option = m_rnd.nextInt(INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length);
@@ -81,6 +84,7 @@ public class Memeplex {
     }
 
     public void setAnotherRandomLocalSearchOption() {
+        if (LOCAL_SEARCH_OPTIONS_TO_USE.length == 1) return;
         int option;
         do {
             option = m_rnd.nextInt(LOCAL_SEARCH_OPTIONS_TO_USE.length);
@@ -97,6 +101,7 @@ public class Memeplex {
     }
 
     public void setAnotherRandomDoSOption() {
+        if (DEPTH_OF_SEARCH_OPTIONS_TO_USE.length == 1) return;
         int option;
         do {
             option = m_rnd.nextInt(DEPTH_OF_SEARCH_OPTIONS_TO_USE.length);

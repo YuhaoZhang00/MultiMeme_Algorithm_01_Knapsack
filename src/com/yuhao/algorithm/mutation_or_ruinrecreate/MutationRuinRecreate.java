@@ -10,3 +10,5 @@ public abstract class MutationRuinRecreate {
     abstract public void applyMutationOrRuinRecreate(Random rnd, Problem problem, Population populationChildren,
                                                      int idChild);
 }
+
+// TODO: comment for subclass

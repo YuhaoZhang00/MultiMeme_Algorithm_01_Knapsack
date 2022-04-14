@@ -23,10 +23,6 @@ public class Population {
 
     private Random rnd;
 
-    public LinkedList<LinkedList<Integer>> getPopulation() {
-        return m_population;
-    }
-
     public LinkedList<Integer> getIndividual(int id) {
         return m_population.get(id);
     }

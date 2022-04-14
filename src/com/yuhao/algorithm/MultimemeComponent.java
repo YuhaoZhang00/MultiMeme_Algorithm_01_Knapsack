@@ -48,7 +48,8 @@ public class MultimemeComponent {
         return m_populationChildren;
     }
 
-    public MultimemeComponent() {
+    public MultimemeComponent() throws ExecutionControl.NotImplementedException {
+        // set the random number
         if (IS_USE_SEED) {
             m_rnd = new Random(SEED);
         } else {
@@ -57,21 +58,25 @@ public class MultimemeComponent {
 
         // read from file
         LinkedList<LinkedList<Double>> infoFromFile = new LinkedList<>();
-        MyFileReader aa = new MyFileReader();
+        MyFileReader fileReader = new MyFileReader();
         try {
-            infoFromFile = aa.readFromFile();
+            infoFromFile = fileReader.readFromFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // initialise the problem by data from the test instance file
         m_problem = new Problem(infoFromFile.get(0).get(0).intValue(), infoFromFile.get(1).get(0), infoFromFile.get(2),
                 infoFromFile.get(3));
 
+        // parents are initialised with random chromosome and memeplex
         m_populationParent = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), true);
-        // TODO: random hill climbing
 
+        // children are initialised with empty chromosome and memeplex
         m_populationChildren = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), false);
     }
+
+    // TODO: comments for methods (注意细节：比如crossover用的是哪一个parent的option等，可以参考CourseworkRunner的伪代码)
 
     private void assignParentChromosomeToChild(int idParent, int idChild) {
         LinkedList<Integer> chromosomeParent = m_populationParent.getIndividual(idParent);
@@ -113,9 +118,7 @@ public class MultimemeComponent {
 
     public boolean terminationCirteriaMet() {
         loopCount++;
-        if (loopCount <= LOOPS_TO_PERFORM)
-            return false;
-        return true;
+        return loopCount > NUMBER_OF_LOOPS;
     }
 
     /**
