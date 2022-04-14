@@ -10,8 +10,10 @@ import com.yuhao.algorithm.mutation_or_ruinrecreate.MutationRuinRecreate;
 import com.yuhao.data.Memeplex;
 import com.yuhao.data.Population;
 import com.yuhao.data.Problem;
+import com.yuhao.utils.MyFileReader;
 import jdk.jshell.spi.ExecutionControl;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -25,11 +27,50 @@ public class MultimemeComponent {
 
     private int loopCount = 0;
 
-    public MultimemeComponent(Random rnd, Problem problem, Population populationParent, Population populationChildren) {
-        m_rnd = rnd;
-        m_problem = problem;
-        m_populationParent = populationParent;
-        m_populationChildren = populationChildren;
+    /**
+     * NOTE: for test use only
+     */
+    public Problem getProblemForTestUse() {
+        return m_problem;
+    }
+
+    /**
+     * NOTE: for test use only
+     */
+    public Population getPopulationParentForTestUse() {
+        return m_populationParent;
+    }
+
+    /**
+     * NOTE: for test use only
+     */
+    public Population getPopulationChildrenForTestUse() {
+        return m_populationChildren;
+    }
+
+    public MultimemeComponent() {
+        if (IS_USE_SEED) {
+            m_rnd = new Random(SEED);
+        } else {
+            m_rnd = new Random();
+        }
+
+        // read from file
+        LinkedList<LinkedList<Double>> infoFromFile = new LinkedList<>();
+        MyFileReader aa = new MyFileReader();
+        try {
+            infoFromFile = aa.readFromFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        m_problem = new Problem(infoFromFile.get(0).get(0).intValue(), infoFromFile.get(1).get(0), infoFromFile.get(2),
+                infoFromFile.get(3));
+
+        m_populationParent = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), true);
+        // TODO: random hill climbing
+
+        m_populationChildren = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), false);
     }
 
     private void assignParentChromosomeToChild(int idParent, int idChild) {

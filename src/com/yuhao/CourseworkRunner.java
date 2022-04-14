@@ -16,7 +16,7 @@ import java.util.Random;
 import static com.yuhao.config.Constant.*;
 
 /**
- * The Multimeme Memetic Algorithm.
+ * The Multimeme Memetic Algorithm
  *
  * <pre>
  * <code>[Initialisation] Create a population of random individuals; apply a random hill climber to each individual
@@ -40,49 +40,11 @@ public class CourseworkRunner {
     // TODO: delta evaluation
 
     public static void main(String[] args) {
-        /*
-        [Initialisation]
-        TODO: Comment here
-         */
-        Random rnd;
-        if (IS_USE_SEED) {
-            rnd = new Random(SEED);
-        } else {
-            rnd = new Random();
-        }
+        MultimemeComponent algorithm = new MultimemeComponent();
 
-        // read from file
-        LinkedList<LinkedList<Double>> infoFromFile = new LinkedList<>();
-        MyFileReader aa = new MyFileReader();
-        try {
-            infoFromFile = aa.readFromFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        testIndividualGenerationAndObjectiveValue(algorithm); // TODO: comment this out
 
-        // TODO: initialisation of problem and population should be put into `MultimemeComponent`
-
-        Problem problem =
-                new Problem(infoFromFile.get(0).get(0).intValue(), infoFromFile.get(1).get(0), infoFromFile.get(2),
-                        infoFromFile.get(3));
-
-        Population populationParent = new Population(rnd, infoFromFile.get(0).get(0).intValue(), true);
-        // TODO: random hill climbing
-
-        Population populationChildren = new Population(rnd, infoFromFile.get(0).get(0).intValue(), false);
-
-        MultimemeComponent algorithm = new MultimemeComponent(rnd, problem, populationParent, populationChildren);
-
-
-        // TODO: comment this out
-        testIndividualGenerationAndObjectiveValue(problem, populationParent, populationChildren, algorithm);
-
-        /*
-        [Main Loop]
-        TODO: Comment here
-         */
-
-        while (! algorithm.terminationCirteriaMet()) {
+        while (!algorithm.terminationCirteriaMet()) {
             for (int i = 0; i < POPULATION_SIZE; i += 2) {
                 int idParent1 = algorithm.applyTournamentSelection();
                 int idParent2 = algorithm.applyTournamentSelection();
@@ -114,21 +76,20 @@ public class CourseworkRunner {
                     e.printStackTrace();
                 }
             }
-
             algorithm.applyPopulationReplacement();
-
         }
 
-        // TODO: comment this out
-        testIndividualGenerationAndObjectiveValue(problem, populationParent, populationChildren, algorithm);
+        testIndividualGenerationAndObjectiveValue(algorithm); // TODO: comment this out
     }
 
     /**
-     * for test use only
+     * NOTE: for test use only
      */
-    private static void testIndividualGenerationAndObjectiveValue(Problem problem, Population populationParent,
-                                                                  Population populationChildren,
-                                                                  MultimemeComponent algorithm) {
+    private static void testIndividualGenerationAndObjectiveValue(MultimemeComponent algorithm) {
+        Problem problem = algorithm.getProblemForTestUse();
+        Population populationParent = algorithm.getPopulationParentForTestUse();
+        Population populationChildren = algorithm.getPopulationChildrenForTestUse();
+
         System.out.println("===testIndividualGenerationAndObjectiveValue===");
         System.out.println("---problem---");
         System.out.println("number of items : " + problem.getNumOfItems());
