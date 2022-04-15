@@ -11,9 +11,8 @@ import static com.yuhao.config.Constant.*;
  * <br> I : IoM
  * <br> L : local search
  * <br> D : DoS
- * <br> Inspired by : Ender Ozcan et al., A Self-adaptive Multimeme Memetic Algorithm Co-evolving Utility Scores to Control
- * Genetic Operators and Their Parameter Settings, pp. 11-13 (Link :
- * http://www.cs.nott.ac.uk/~pszeo/docs/publications/multimemeAlgorithmChesc.pdf)
+ * <br> Inspired by : Ender Ozcan et al., A Self-adaptive Multimeme Memetic Algorithm Co-evolving Utility Scores to
+ * Control Genetic Operators and Their Parameter Settings, pp. 11-13 (Link : http://www.cs.nott.ac.uk/~pszeo/docs/publications/multimemeAlgorithmChesc.pdf)
  */
 public class Memeplex {
     private int m_crossoverOption;
@@ -33,7 +32,8 @@ public class Memeplex {
     }
 
     public void setAnotherRandomCrossoverOption() {
-        if (CROSSOVER_OPTIONS_TO_USE.length == 1) return;
+        if (CROSSOVER_OPTIONS_TO_USE.length == 1)
+            return;
         int option;
         do {
             option = m_rnd.nextInt(CROSSOVER_OPTIONS_TO_USE.length);
@@ -50,7 +50,8 @@ public class Memeplex {
     }
 
     public void setAnotherRandomMutationOption() {
-        if (MUTATION_OPTIONS_TO_USE.length == 1) return;
+        if (MUTATION_OPTIONS_TO_USE.length == 1)
+            return;
         int option;
         do {
             option = m_rnd.nextInt(MUTATION_OPTIONS_TO_USE.length);
@@ -67,7 +68,8 @@ public class Memeplex {
     }
 
     public void setAnotherRandomIoMOption() {
-        if (INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length == 1) return;
+        if (INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length == 1)
+            return;
         int option;
         do {
             option = m_rnd.nextInt(INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length);
@@ -84,7 +86,8 @@ public class Memeplex {
     }
 
     public void setAnotherRandomLocalSearchOption() {
-        if (LOCAL_SEARCH_OPTIONS_TO_USE.length == 1) return;
+        if (LOCAL_SEARCH_OPTIONS_TO_USE.length == 1)
+            return;
         int option;
         do {
             option = m_rnd.nextInt(LOCAL_SEARCH_OPTIONS_TO_USE.length);
@@ -101,7 +104,8 @@ public class Memeplex {
     }
 
     public void setAnotherRandomDoSOption() {
-        if (DEPTH_OF_SEARCH_OPTIONS_TO_USE.length == 1) return;
+        if (DEPTH_OF_SEARCH_OPTIONS_TO_USE.length == 1)
+            return;
         int option;
         do {
             option = m_rnd.nextInt(DEPTH_OF_SEARCH_OPTIONS_TO_USE.length);
@@ -112,6 +116,10 @@ public class Memeplex {
     public Memeplex(Random rnd, boolean isSetRandomValue) {
         m_rnd = rnd;
 
+        iniMemeplexOptions(isSetRandomValue);
+    }
+
+    public void iniMemeplexOptions(boolean isSetRandomValue) {
         if (isSetRandomValue) {
             m_crossoverOption = CROSSOVER_OPTIONS_TO_USE[m_rnd.nextInt(CROSSOVER_OPTIONS_TO_USE.length)];
             m_mutationOption = MUTATION_OPTIONS_TO_USE[m_rnd.nextInt(MUTATION_OPTIONS_TO_USE.length)];
@@ -119,6 +127,12 @@ public class Memeplex {
                     INTENSITY_OF_MUTATION_OPTIONS_TO_USE[m_rnd.nextInt(INTENSITY_OF_MUTATION_OPTIONS_TO_USE.length)];
             m_localSearchOption = LOCAL_SEARCH_OPTIONS_TO_USE[m_rnd.nextInt(LOCAL_SEARCH_OPTIONS_TO_USE.length)];
             m_DoSOption = DEPTH_OF_SEARCH_OPTIONS_TO_USE[m_rnd.nextInt(DEPTH_OF_SEARCH_OPTIONS_TO_USE.length)];
+        } else {
+            m_crossoverOption = 0;
+            m_mutationOption = 0;
+            m_IoMOption = 0;
+            m_localSearchOption = 0;
+            m_DoSOption = 0;
         }
     }
 }

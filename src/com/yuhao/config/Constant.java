@@ -6,8 +6,8 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-    public static String FILE_TO_READ = "resource/otherInstances/2614.txt";
-//    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
+//    public static String FILE_TO_READ = "resource/otherInstances/2558.txt";
+    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden1_5_80.txt";
@@ -19,10 +19,23 @@ public class Constant {
     /**
      * path of the folder for generated objective value files for each trial
      * <p> [Instruction] a string of the relative path / absolute path of the intended folder
-     * <br> [Threat] invalid path will result in {@code FileNotFoundException}; Please note that the files in the
-     * folder with the same name will be overwritten
+     * <br> [Threat] invalid path (e.g. folder not exist) will result in {@code IOException}
      */
-    public static String FOLDER_TO_WRITE = "output/instanceName_n_W_trialID_output.txt"; // TODO: change
+    public static String FOLDER_TO_WRITE = "resource";
+    /**
+     * instance name for name of the output file; if there's a file with the same name in the given folder and path the
+     * file will be overwritten, otherwise a file with corresponding name will be created
+     * <p> [Instruction] a string of instance name, or {@code ""} to use the name of the name of the {@code
+     * FILE_TO_READ}
+     * <br> [Threat] Please note that the files in the folder with the same name will be overwritten
+     */
+    public static String INSTANCE_NAME = "";
+    /**
+     * max number of entries (i.e. pairs of best/worst objective values) to record in the output file
+     * <p> [Instruction] an integer number, should be less than or equal to {@code NUMBER_OF_LOOPS}
+     * <br> [Threat] if the number is greater than {@code NUMBER_OF_LOOPS}, there will be empty files created
+     */
+    public static int MAX_NUMBER_OF_ENTRIES_TO_WRITE = 300;
 
     /**
      * whether to use a certain seed to run the trials
@@ -33,7 +46,7 @@ public class Constant {
      * the certain seed to run the trials, only takes effect if {@code IS_USE_SEED == true}
      * <p> [Instruction] a long number
      */
-    public static long SEED = 123456;
+    public static long SEED = 1000;
 
     /**
      * number of trials to perform

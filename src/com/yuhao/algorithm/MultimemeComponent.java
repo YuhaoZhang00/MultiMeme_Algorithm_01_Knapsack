@@ -25,30 +25,30 @@ public class MultimemeComponent {
     private Population m_populationParent;
     private Population m_populationChildren;
 
-    private int loopCount = 0;
+    private int m_loopCount = 0;
 
     /**
-     * NOTE: for test use only
+     * NOTE: for test and printout use only
      */
     public Problem getProblemForTestUse() {
         return m_problem;
     }
 
     /**
-     * NOTE: for test use only
+     * NOTE: for test and printout use only
      */
     public Population getPopulationParentForTestUse() {
         return m_populationParent;
     }
 
     /**
-     * NOTE: for test use only
+     * NOTE: for test and printout use only
      */
     public Population getPopulationChildrenForTestUse() {
         return m_populationChildren;
     }
 
-    public MultimemeComponent() throws ExecutionControl.NotImplementedException {
+    public MultimemeComponent() {
         // set the random number
         if (IS_USE_SEED) {
             m_rnd = new Random(SEED);
@@ -74,6 +74,8 @@ public class MultimemeComponent {
 
         // children are initialised with empty chromosome and memeplex
         m_populationChildren = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), false);
+
+        m_loopCount = 0;
     }
 
     // TODO: comments for methods (注意细节：比如crossover用的是哪一个parent的option等，可以参考CourseworkRunner的伪代码)
@@ -116,6 +118,13 @@ public class MultimemeComponent {
         memeplexParent.setDoSOption((memeplexChild.getDoSOption()));
     }
 
+    public void reInitialise() {
+        m_populationParent.reInitialise(true);
+        m_populationChildren.reInitialise(false);
+
+        m_loopCount = 0;
+    }
+
     /**
      * Returns the objective value of the given individual
      * <p> Objective function :
@@ -152,8 +161,8 @@ public class MultimemeComponent {
     }
 
     public boolean terminationCirteriaMet() {
-        loopCount++;
-        return loopCount > NUMBER_OF_LOOPS;
+        m_loopCount++;
+        return m_loopCount > NUMBER_OF_LOOPS;
     }
 
     public int applyTournamentSelection() {

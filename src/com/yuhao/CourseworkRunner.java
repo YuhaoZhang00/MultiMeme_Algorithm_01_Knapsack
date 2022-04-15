@@ -5,6 +5,7 @@ import com.yuhao.data.Memeplex;
 import com.yuhao.data.Population;
 import com.yuhao.data.Problem;
 import com.yuhao.utils.MyFileReader;
+import com.yuhao.utils.MyFileWriter;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.io.IOException;
@@ -41,56 +42,111 @@ public class CourseworkRunner {
 
     public static void main(String[] args) {
         try {
-            // initialise
             MultimemeComponent algorithm = new MultimemeComponent();
 
-            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+            // loop for multiple trials
+            for (int l = 0; l < NUMBER_OF_TRIALS; l++) {
 
-            // main loop
-            while (!algorithm.terminationCirteriaMet()) {
-                for (int i = 0; i < POPULATION_SIZE; i += 2) {
-                    // apply tournament selection to parents
-                    int idParent1 = algorithm.applyTournamentSelection();
-                    int idParent2 = algorithm.applyTournamentSelection();
-                    int idChild1 = i;
-                    int idChild2 = i + 1;
+                // ----------------------------------------
+                MyFileWriter fileWriter = new MyFileWriter(algorithm.getProblemForTestUse().getNumOfItems(),
+                        (int) algorithm.getProblemForTestUse().getKnapsackCapacity(), l + 1);
+                // ----------------------------------------
 
-                    // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
-                    // i.e. parent1 has a better fitness
-                    if (algorithm.getObjectiveValue(true, idParent1) < algorithm.getObjectiveValue(true, idParent2)) {
-                        int temp = idParent1;
-                        idParent1 = idParent2;
-                        idParent2 = temp;
-                    }
-
-                    // apply crossover with IoM
-                    algorithm.applyCrossover(idParent1, idParent2, idChild1, idChild2);
-
-                    // apply memetic simple inheritance
-                    algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
-
-                    // apply mutation / ruin-recreate with IoM for children
-                    algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
-                    algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
-
-                    // apply mutation of memeplex for children
-                    algorithm.applyMutationOfMemeplex(idChild1);
-                    algorithm.applyMutationOfMemeplex(idChild2);
-
-                    // apply local search with DoS for children
-                    algorithm.applyLocalSearchWithDoS(idChild1);
-                    algorithm.applyLocalSearchWithDoS(idChild2);
-
+                // initialise
+                if (l != 0) {
+                    algorithm.reInitialise();
                 }
-                // apply elitist population replacement
-                algorithm.applyPopulationReplacement();
+
+                // ----------------------------------------
+//            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+                // ----------------------------------------
+
+                // main loop
+                while (!algorithm.terminationCirteriaMet()) {
+                    for (int i = 0; i < POPULATION_SIZE; i += 2) {
+                        // apply tournament selection to parents
+                        int idParent1 = algorithm.applyTournamentSelection();
+                        int idParent2 = algorithm.applyTournamentSelection();
+                        int idChild1 = i;
+                        int idChild2 = i + 1;
+
+                        // make sure the objectiveValue of parent1 is greater than (or equal to) parent2,
+                        // i.e. parent1 has a better fitness
+                        if (algorithm.getObjectiveValue(true, idParent1) <
+                                algorithm.getObjectiveValue(true, idParent2)) {
+                            int temp = idParent1;
+                            idParent1 = idParent2;
+                            idParent2 = temp;
+                        }
+
+                        // apply crossover with IoM
+                        algorithm.applyCrossover(idParent1, idParent2, idChild1, idChild2);
+
+                        // apply memetic simple inheritance
+                        algorithm.applyMemeticSimpleInheritance(idParent1, idChild1, idChild2);
+
+                        // apply mutation / ruin-recreate with IoM for children
+                        algorithm.applyMutationOrRuinRecreateWithIoM(idChild1);
+                        algorithm.applyMutationOrRuinRecreateWithIoM(idChild2);
+
+                        // apply mutation of memeplex for children
+                        algorithm.applyMutationOfMemeplex(idChild1);
+                        algorithm.applyMutationOfMemeplex(idChild2);
+
+                        // apply local search with DoS for children
+                        algorithm.applyLocalSearchWithDoS(idChild1);
+                        algorithm.applyLocalSearchWithDoS(idChild2);
+
+                    }
+                    // apply elitist population replacement
+                    algorithm.applyPopulationReplacement();
+
+                    // ----------------------------------------
+                    double highestObjectiveValue = -Double.MAX_VALUE;
+                    double lowestObjectiveValue = Double.MAX_VALUE;
+                    for (int i = 0; i < POPULATION_SIZE; i++) {
+                        double currentObjectiveValue = algorithm.getObjectiveValue(true, i);
+                        if (currentObjectiveValue > highestObjectiveValue) {
+                            highestObjectiveValue = currentObjectiveValue;
+                        }
+                        if (currentObjectiveValue < lowestObjectiveValue) {
+                            lowestObjectiveValue = currentObjectiveValue;
+                        }
+                    }
+                    fileWriter.writeToFile(highestObjectiveValue, lowestObjectiveValue);
+                    // ----------------------------------------
+                }
+
+                // ----------------------------------------
+//            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+                showBestSolutionPerTrial(l, algorithm);
+                // ----------------------------------------
+
             }
-
-            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
-
-        } catch (ExecutionControl.NotImplementedException e) {
+        } catch (IOException | ExecutionControl.NotImplementedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * prints the best solution and its encoding per trial to standard output
+     */
+    private static void showBestSolutionPerTrial(int l, MultimemeComponent algorithm) {
+        System.out.println("Trial#" + (l + 1) + ":");
+        double highestObjectiveValue = -Double.MAX_VALUE;
+        LinkedList<Integer> chromosomeOfHighestObjectiveValue = null;
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            double currentObjectiveValue = algorithm.getObjectiveValue(true, i);
+            if (currentObjectiveValue > highestObjectiveValue) {
+                highestObjectiveValue = currentObjectiveValue;
+                chromosomeOfHighestObjectiveValue = algorithm.getPopulationParentForTestUse().getIndividual(i);
+            }
+        }
+        System.out.println(highestObjectiveValue);
+        for (int i = 0; i < algorithm.getProblemForTestUse().getNumOfItems(); i++) {
+            System.out.print(chromosomeOfHighestObjectiveValue.get(i));
+        }
+        System.out.println();
     }
 
     /**
@@ -108,11 +164,15 @@ public class CourseworkRunner {
         System.out.println("min profit : " + problem.getMinProfit());
         System.out.println("---populationParent---");
         for (int i = 0; i < POPULATION_SIZE; i++) {
-            System.out.print(i + " : ");
-            for (int allele : populationParent.getIndividual(i)) {
-                System.out.print(allele + " ");
+            if (i < 10) {
+                System.out.print(" " + i + " : ");
+            } else {
+                System.out.print(i + " : ");
             }
-            System.out.print("- ");
+            for (int allele : populationParent.getIndividual(i)) {
+                System.out.print(allele);
+            }
+            System.out.print(" - ");
             Memeplex m = populationParent.getMemeplex(i);
             System.out.print(m.getCrossoverOption() + " ");
             System.out.print(m.getMutationOption() + " ");
@@ -121,21 +181,21 @@ public class CourseworkRunner {
             System.out.print(m.getDoSOption() + " ");
             System.out.println("- " + algorithm.getObjectiveValue(true, i));
         }
-        System.out.println("---populationChildren---");
-        for (int i = 0; i < POPULATION_SIZE; i++) {
-            System.out.print(i + " : ");
-            for (int allele : populationChildren.getIndividual(i)) {
-                System.out.print(allele + " ");
-            }
-            System.out.print("- ");
-            Memeplex m = populationChildren.getMemeplex(i);
-            System.out.print(m.getCrossoverOption() + " ");
-            System.out.print(m.getMutationOption() + " ");
-            System.out.print(m.getIoMOption() + " ");
-            System.out.print(m.getLocalSearchOption() + " ");
-            System.out.print(m.getDoSOption() + " ");
-            System.out.println("- " + algorithm.getObjectiveValue(false, i));
-        }
+//        System.out.println("---populationChildren---");
+//        for (int i = 0; i < POPULATION_SIZE; i++) {
+//            System.out.print(i + " : ");
+//            for (int allele : populationChildren.getIndividual(i)) {
+//                System.out.print(allele);
+//            }
+//            System.out.print(" - ");
+//            Memeplex m = populationChildren.getMemeplex(i);
+//            System.out.print(m.getCrossoverOption() + " ");
+//            System.out.print(m.getMutationOption() + " ");
+//            System.out.print(m.getIoMOption() + " ");
+//            System.out.print(m.getLocalSearchOption() + " ");
+//            System.out.print(m.getDoSOption() + " ");
+//            System.out.println("- " + algorithm.getObjectiveValue(false, i));
+//        }
         System.out.println("===end===");
     }
 }

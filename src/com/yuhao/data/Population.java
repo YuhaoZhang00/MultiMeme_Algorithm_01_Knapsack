@@ -39,24 +39,35 @@ public class Population {
         this.rnd = rnd;
 
         m_chromosomeLength = chromosomeLength;
+        initialise(isSetRandomValue);
+    }
+
+    private void initialise(boolean isSetRandomValue) {
         m_population = iniPopulation(isSetRandomValue);
         m_memeplexs = iniMemeplexs(rnd, isSetRandomValue);
     }
 
     private LinkedList<LinkedList<Integer>> iniPopulation(boolean isSetRandomValue) {
-        LinkedList<LinkedList<Integer>> population = new LinkedList<LinkedList<Integer>>();
-        for (int i = 0; i < POPULATION_SIZE; i++) {
-            LinkedList<Integer> individual = new LinkedList<Integer>();
-            for (int j = 0; j < m_chromosomeLength; j++) {
-                if (isSetRandomValue) {
+        LinkedList<LinkedList<Integer>> population = new LinkedList<>();
+        if (isSetRandomValue) {
+            for (int i = 0; i < POPULATION_SIZE; i++) {
+                LinkedList<Integer> individual = new LinkedList<>();
+                for (int j = 0; j < m_chromosomeLength; j++) {
                     individual.add((rnd.nextDouble() < 0.5) ? 0 : 1);
-                } else {
+                }
+                population.add(individual);
+            }
+        } else {
+            for (int i = 0; i < POPULATION_SIZE; i++) {
+                LinkedList<Integer> individual = new LinkedList<>();
+                for (int j = 0; j < m_chromosomeLength; j++) {
                     individual.add(0);
                 }
+                population.add(individual);
             }
-            population.add(individual);
         }
         return population;
+
     }
 
     private LinkedList<Memeplex> iniMemeplexs(Random rnd, boolean isSetRandomValue) {
@@ -65,5 +76,23 @@ public class Population {
             memeplexes.add(new Memeplex(rnd, isSetRandomValue));
         }
         return memeplexes;
+    }
+
+    public void reInitialise(boolean isSetRandomValue) {
+        if (isSetRandomValue) {
+            for (int i = 0; i < POPULATION_SIZE; i++) {
+                for (int j = 0; j < m_chromosomeLength; j++) {
+                    m_population.get(i).set(j, (rnd.nextDouble() < 0.5) ? 0 : 1);
+                }
+                m_memeplexs.get(i).iniMemeplexOptions(true);
+            }
+        } else {
+            for (int i = 0; i < POPULATION_SIZE; i++) {
+                for (int j = 0; j < m_chromosomeLength; j++) {
+                    m_population.get(i).set(j, 0);
+                }
+                m_memeplexs.get(i).iniMemeplexOptions(false);
+            }
+        }
     }
 }

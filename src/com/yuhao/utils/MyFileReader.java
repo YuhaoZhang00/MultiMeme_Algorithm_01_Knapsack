@@ -47,31 +47,4 @@ public class MyFileReader {
 		returnValue.add(weights);
 		return returnValue;
 	}
-
-	// TODO
-	public void writeToFile() throws IOException {
-		File file = new File(Constant.FOLDER_TO_WRITE); // TODO: wrong!
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-		bw.write("aaa");
-		bw.newLine();
-		bw.close();
-	}
-
-//    public static void main(String[] args) {
-//    	LinkedList<LinkedList<Integer>> returnValue = new LinkedList<LinkedList<Integer>>();
-//    	
-//    	MyFileReader aa = new MyFileReader();
-//    	try {
-//    		returnValue = aa.readFromFile();
-//    	} catch (IOException e) {
-//    		System.out.println(e);
-//    	}
-//    	
-//    	for (int i = 0; i < returnValue.size(); i++) {
-//    		for (int j = 0; j < returnValue.get(i).size(); j++) {
-//    			System.out.print(returnValue.get(i).get(j) + "  ");
-//    		}
-//    		System.out.println(";");
-//    	}
-//	}
 }
