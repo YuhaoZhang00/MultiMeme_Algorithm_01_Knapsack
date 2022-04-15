@@ -6,8 +6,8 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-//    public static String FILE_TO_READ = "resource/otherInstances/2558.txt";
-    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2558.txt";
+//    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden1_5_80.txt";
@@ -52,7 +52,7 @@ public class Constant {
      * number of trials to perform
      * <p> [Instruction] suggested value : 5
      */
-    public static int NUMBER_OF_TRIALS = 5;
+    public static int NUMBER_OF_TRIALS = 10;
     /**
      * number of loops to perform per trial
      * <p> [Instruction] suggested value : 300
@@ -91,14 +91,19 @@ public class Constant {
     /**
      * Mutation OR Ruin-Recreate options to use
      * <p> 0 : Bit flip [Mutation]
-     * <br> 1 : Bit flip [Mutation] // TODO: subject to change
-     * <br> 2 : Bit flip [Mutation] // TODO: subject to change
+     * <br> 1 : Replaces the highest profit item in the knapsack with the lowest profit item out of knapsack [Mutation]
+     * <br> 2 : Replaces the highest profit item in the knapsack with the highest profit item out of knapsack
+     * [Mutation]
+     * <br> 3 : Replaces the lowest profit item in the knapsack with the lowest profit item out of knapsack [Mutation]
+     * <br> 4 : Replaces the lowest profit item in the knapsack with the highest profit item out of knapsack [Mutation]
+     * <br> 5 : Replaces a random item in the knapsack with the highest profit item out of knapsack [Mutation]
+     * <br> 6 : Replaces a random item in the knapsack with the lowest profit item out of knapsack [Mutation]
      * <p> [Instruction] please put the index of mutation or ruin-recreate options you want to apply in the multimeme
      * memetic algorithm in the brackets below
      * <br> [Threat] please put more than 2 options to enable a mutation of this meme; putting only 1 option in the
      * bracket means the way of mutation or ruin-recreate is fixed throughout the run
      */
-    public static int[] MUTATION_OPTIONS_TO_USE = {0, 1, 2};
+    public static int[] MUTATION_OPTIONS_TO_USE = {0, 4, 5};
     /**
      * Intensity of Mutation options to use
      * <p> 0 : mutation or ruin_recreate for 1 times
@@ -133,7 +138,7 @@ public class Constant {
      * algorithm in the brackets below
      * <br> [Threat] please put more than 2 options to enable a mutation of this meme; putting only 1 option in the
      * bracket means the way of local search is fixed throughout the run
-     */
+     */ // TODO: exclude some algorithm with bad performance
     public static int[] LOCAL_SEARCH_OPTIONS_TO_USE = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     /**
      * Depth of Search options to use

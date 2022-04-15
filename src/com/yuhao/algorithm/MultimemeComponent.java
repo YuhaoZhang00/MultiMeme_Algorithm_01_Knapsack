@@ -5,8 +5,7 @@ import com.yuhao.algorithm.crossover.OnePTX;
 import com.yuhao.algorithm.crossover.TwoPTX;
 import com.yuhao.algorithm.crossover.UX;
 import com.yuhao.algorithm.localsearch.*;
-import com.yuhao.algorithm.mutation_or_ruinrecreate.BitFlip;
-import com.yuhao.algorithm.mutation_or_ruinrecreate.MutationRuinRecreate;
+import com.yuhao.algorithm.mutation_or_ruinrecreate.*;
 import com.yuhao.data.Memeplex;
 import com.yuhao.data.Population;
 import com.yuhao.data.Problem;
@@ -290,10 +289,15 @@ public class MultimemeComponent {
     private MutationRuinRecreate getMutationOrRuinRecreateOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new BitFlip();
-            case 1 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
-            case 2 -> new BitFlip(); // TODO: more mutation or ruinrecreate options
-            // TODO: HINT: - **a swap of the largest selected item with a smallest item that was not selected**
-            // - **swap between the most valuable selected item with the least valuable item that was not selected**
+            case 1 -> new ReplaceHighestProfitWithLowest();
+            case 2 -> new ReplaceHighestProfitWithHighest();
+            case 3 -> new ReplaceLowestProfitWithLowest();
+            case 4 -> new ReplaceLowestProfitWithHighest();
+            case 5 -> new ReplaceRandomWithHighestProfit();
+            case 6 -> new ReplaceRandomWithLowestProfit();
+            // TODO: HINT: a swap of the largest selected item with a smallest item that was not selected
+            // TODO: THINK OF: lowest weight / highest value per weight
+            // TODO: more mutation or ruinrecreate options (if possible)
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
