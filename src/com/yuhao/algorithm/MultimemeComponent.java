@@ -336,7 +336,6 @@ public class MultimemeComponent {
             case 11 -> new LeastImprovement_IE();
             // TODO: more local search options
             // TODO: for DB/GA/SA/LI HC If there is no improvement in a pass, the algorithm should be terminated.
-            // TODO: for RMHC number of bit flips can be set i.e. RMHC_1  RMHC_2
             default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
         };
     }
