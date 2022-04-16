@@ -1,6 +1,5 @@
 package com.yuhao.algorithm.crossover;
 
-import com.yuhao.algorithm.MultimemeComponent;
 import com.yuhao.data.Population;
 import com.yuhao.data.Problem;
 
@@ -8,11 +7,10 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
- * Two Point Crossover
- * <p> two crossover points are selected, the part of chromosome from the first to the second crossover point is
- * exchanged
+ * Put the items that are included by both parents to a child, and items that are included by only one parents to
+ * another child
  */
-public class TwoPTX extends Crossover {
+public class IntersectAndSame extends Crossover {
     @Override
     public void applyCrossover(Random rnd, Problem problem, Population populationParent, Population populationChildren,
                                int idParent1, int idParent2, int idChild1, int idChild2) {
@@ -21,22 +19,9 @@ public class TwoPTX extends Crossover {
         LinkedList<Integer> chromosomeChild1 = new LinkedList<>();
         LinkedList<Integer> chromosomeChild2 = new LinkedList<>();
 
-        int i = rnd.nextInt(problem.getNumOfItems());
-        int j = rnd.nextInt(problem.getNumOfItems());
-        if (i > j) {
-            int temp = i;
-            i = j;
-            j = temp;
-        }
-
         for (int allele = 0; allele < problem.getNumOfItems(); allele++) {
-            if (allele < i || allele >= j) {
-                chromosomeChild1.add(chromosomeParent2.get(allele));
-                chromosomeChild2.add(chromosomeParent1.get(allele));
-            } else {
-                chromosomeChild1.add(chromosomeParent1.get(allele));
-                chromosomeChild2.add(chromosomeParent2.get(allele));
-            }
+            chromosomeChild1.add(chromosomeParent1.get(allele) & chromosomeParent2.get(allele));
+            chromosomeChild2.add(chromosomeParent1.get(allele) ^ chromosomeParent2.get(allele));
         }
 
         populationChildren.setIndividual(idChild1, chromosomeChild1);

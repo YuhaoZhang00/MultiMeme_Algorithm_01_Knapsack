@@ -11,6 +11,3 @@ public abstract class Crossover {
                                         Population populationChildren, int idParent1, int idParent2, int idChild1,
                                         int idChild2);
 }
-
-// TODO: comment for subclass
-

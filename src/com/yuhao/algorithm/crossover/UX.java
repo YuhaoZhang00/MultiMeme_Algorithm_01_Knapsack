@@ -7,6 +7,10 @@ import com.yuhao.data.Problem;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * Uniform Crossover
+ * <p> for each allele in the chromosome there is a probability (0.5) of crossover
+ */
 public class UX extends Crossover {
     @Override
     public void applyCrossover(Random rnd, Problem problem, Population populationParent, Population populationChildren,

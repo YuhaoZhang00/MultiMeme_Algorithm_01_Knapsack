@@ -14,25 +14,25 @@ public class ReplaceLowestProfitWithLowest extends MutationRuinRecreate {
     @Override
     public void applyMutationOrRuinRecreate(Random rnd, Problem problem, Population populationChildren, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
-        int lowestValueInIndex = -1;
+        int lowestProfitInIndex = -1;
         double lowestProfitIn = Double.MAX_VALUE;
-        int lowestValueOutIndex = -1;
+        int lowestProfitOutIndex = -1;
         double lowestProfitOut = Double.MAX_VALUE;
 
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             if (chromosomeChild.get(i) == 1 && problem.getProfit(i) < lowestProfitIn) {
                 lowestProfitIn = problem.getProfit(i);
-                lowestValueInIndex = i;
+                lowestProfitInIndex = i;
             }
             if (chromosomeChild.get(i) == 0 && problem.getProfit(i) < lowestProfitOut) {
                 lowestProfitOut = problem.getProfit(i);
-                lowestValueOutIndex = i;
+                lowestProfitOutIndex = i;
             }
         }
 
-        if (lowestValueInIndex != -1 && lowestValueOutIndex != -1) {
-            chromosomeChild.set(lowestValueInIndex, 0);
-            chromosomeChild.set(lowestValueOutIndex, 1);
+        if (lowestProfitInIndex != -1 && lowestProfitOutIndex != -1) {
+            chromosomeChild.set(lowestProfitInIndex, 0);
+            chromosomeChild.set(lowestProfitOutIndex, 1);
         }
     }
 }

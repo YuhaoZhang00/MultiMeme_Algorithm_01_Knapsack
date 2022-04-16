@@ -10,6 +10,3 @@ public abstract class LocalSearch {
     abstract public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
                                           MultimemeComponent algorithm, int idChild);
 }
-
-// TODO: for DB/GA/SA/LI HC If there is no improvement in a pass, the algorithm should be terminated.
-// TODO: for RMHC number of bit flips can be set i.e. RMHC_1  RMHC_2

@@ -16,7 +16,7 @@ public class ReplaceRandomWithLowestProfit extends MutationRuinRecreate {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         LinkedList<Integer> itemsInKnapsack = new LinkedList<>();
 
-        int lowestValueOutIndex = -1;
+        int lowestProfitOutIndex = -1;
         double lowestProfitOut = Double.MAX_VALUE;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             if (chromosomeChild.get(i) == 1) {
@@ -24,13 +24,13 @@ public class ReplaceRandomWithLowestProfit extends MutationRuinRecreate {
             }
             if (chromosomeChild.get(i) == 0 && problem.getProfit(i) < lowestProfitOut) {
                 lowestProfitOut = problem.getProfit(i);
-                lowestValueOutIndex = i;
+                lowestProfitOutIndex = i;
             }
         }
 
-        if (itemsInKnapsack.size() != 0 && lowestValueOutIndex != -1) {
+        if (itemsInKnapsack.size() != 0 && lowestProfitOutIndex != -1) {
             chromosomeChild.set(itemsInKnapsack.get(rnd.nextInt(itemsInKnapsack.size())), 0);
-            chromosomeChild.set(lowestValueOutIndex, 1);
+            chromosomeChild.set(lowestProfitOutIndex, 1);
         }
     }
 }

@@ -1,9 +1,6 @@
 package com.yuhao.algorithm;
 
-import com.yuhao.algorithm.crossover.Crossover;
-import com.yuhao.algorithm.crossover.OnePTX;
-import com.yuhao.algorithm.crossover.TwoPTX;
-import com.yuhao.algorithm.crossover.UX;
+import com.yuhao.algorithm.crossover.*;
 import com.yuhao.algorithm.localsearch.*;
 import com.yuhao.algorithm.mutation_or_ruinrecreate.*;
 import com.yuhao.data.Memeplex;
@@ -281,7 +278,10 @@ public class MultimemeComponent {
         return switch (id) {
             case 0 -> new OnePTX();
             case 1 -> new TwoPTX();
-            case 2 -> new UX(); // TODO: more crossover options (if possible)
+            case 2 -> new UX();
+            case 3 -> new IntersectAndSame();
+            case 4 -> new IntersectAndBoth();
+            case 5 -> new SameAndBoth();
             default -> throw new ExecutionControl.NotImplementedException("Invalid crossover id");
         };
     }
@@ -295,9 +295,15 @@ public class MultimemeComponent {
             case 4 -> new ReplaceLowestProfitWithHighest();
             case 5 -> new ReplaceRandomWithHighestProfit();
             case 6 -> new ReplaceRandomWithLowestProfit();
+            case 7 -> new ReplaceHighestWeightWithLowest();
+            case 8 -> new ReplaceHighestWeightWithHighest();
+            case 9 -> new ReplaceLowestWeightWithLowest();
+            case 10 -> new ReplaceLowestWeightWithHighest();
+            case 11 -> new ReplaceRandomWithHighestWeight();
+            case 12 -> new ReplaceRandomWithLowestWeight();
             // TODO: HINT: a swap of the largest selected item with a smallest item that was not selected
             // TODO: THINK OF: lowest weight / highest value per weight
-            // TODO: more mutation or ruinrecreate options (if possible)
+            // TODO: more ruinrecreate options
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
@@ -327,7 +333,10 @@ public class MultimemeComponent {
             case 8 -> new GAHC_Advanced_OI();
             case 9 -> new GAHC_Advanced_IE();
             case 10 -> new LeastImprovement_OI();
-            case 11 -> new LeastImprovement_IE(); // TODO: more local search options
+            case 11 -> new LeastImprovement_IE();
+            // TODO: more local search options
+            // TODO: for DB/GA/SA/LI HC If there is no improvement in a pass, the algorithm should be terminated.
+            // TODO: for RMHC number of bit flips can be set i.e. RMHC_1  RMHC_2
             default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
         };
     }

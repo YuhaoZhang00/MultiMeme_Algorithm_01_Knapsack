@@ -14,25 +14,25 @@ public class ReplaceHighestProfitWithHighest extends MutationRuinRecreate {
     @Override
     public void applyMutationOrRuinRecreate(Random rnd, Problem problem, Population populationChildren, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
-        int highestValueInIndex = -1;
+        int highestProfitInIndex = -1;
         double highestProfitIn = -Double.MAX_VALUE;
-        int highestValueOutIndex = -1;
+        int highestProfitOutIndex = -1;
         double highestProfitOut = -Double.MAX_VALUE;
 
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             if (chromosomeChild.get(i) == 1 && problem.getProfit(i) > highestProfitIn) {
                 highestProfitIn = problem.getProfit(i);
-                highestValueInIndex = i;
+                highestProfitInIndex = i;
             }
             if (chromosomeChild.get(i) == 0 && problem.getProfit(i) > highestProfitOut) {
                 highestProfitOut = problem.getProfit(i);
-                highestValueOutIndex = i;
+                highestProfitOutIndex = i;
             }
         }
 
-        if (highestValueInIndex != -1 && highestValueOutIndex != -1) {
-            chromosomeChild.set(highestValueInIndex, 0);
-            chromosomeChild.set(highestValueOutIndex, 1);
+        if (highestProfitInIndex != -1 && highestProfitOutIndex != -1) {
+            chromosomeChild.set(highestProfitInIndex, 0);
+            chromosomeChild.set(highestProfitOutIndex, 1);
         }
     }
 }

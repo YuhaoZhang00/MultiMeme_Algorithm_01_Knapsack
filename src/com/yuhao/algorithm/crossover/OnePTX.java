@@ -7,6 +7,10 @@ import com.yuhao.data.Problem;
 import java.util.LinkedList;
 import java.util.Random;
 
+/**
+ * One Point Crossover
+ * <p> a single crossover point is selected, the part of chromosome after that point is exchanged
+ */
 public class OnePTX extends Crossover {
     @Override
     public void applyCrossover(Random rnd, Problem problem, Population populationParent, Population populationChildren,
