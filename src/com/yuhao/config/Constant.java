@@ -6,7 +6,7 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-    public static String FILE_TO_READ = "resource/otherInstances/2617.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2460.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
@@ -93,8 +93,9 @@ public class Constant {
     public static int[] CROSSOVER_OPTIONS_TO_USE = {0, 1, 2, 3, 4, 5};
     /**
      * Mutation OR Ruin-Recreate options to use
-     * <p> 0 : Bit flip [Mutation]
-     * <br> -- profit --
+     * <p> -- [Mutation] general approach --
+     * <br> 0 : Bit flip [Mutation]
+     * <br> -- [Mutation] profit --
      * <br> 1 : Replaces the highest profit item in the knapsack with the lowest profit item out of knapsack [Mutation]
      * <br> 2 : Replaces the highest profit item in the knapsack with the highest profit item out of knapsack
      * [Mutation]
@@ -102,7 +103,7 @@ public class Constant {
      * <br> 4 : Replaces the lowest profit item in the knapsack with the highest profit item out of knapsack [Mutation]
      * <br> 5 : Replaces a random item in the knapsack with the highest profit item out of knapsack [Mutation]
      * <br> 6 : Replaces a random item in the knapsack with the lowest profit item out of knapsack [Mutation]
-     * <br> -- weight --
+     * <br> -- [Mutation] weight --
      * <br> 7 : Replaces the highest weight item in the knapsack with the lowest weight item out of knapsack [Mutation]
      * <br> 8 : Replaces the highest weight item in the knapsack with the highest weight item out of knapsack
      * [Mutation]
@@ -111,12 +112,19 @@ public class Constant {
      * [Mutation]
      * <br> 11 : Replaces a random item in the knapsack with the highest weight item out of knapsack [Mutation]
      * <br> 12 : Replaces a random item in the knapsack with the lowest weight item out of knapsack [Mutation]
+     * <br> -- [Mutation] value per weight --
+     * <br> 13 : Replaces the lowest 'profit per weight' item in the knapsack with the highest 'profit per weight' item
+     * out of knapsack [Mutation]
+     * <br> 14 : Replaces a random item in the knapsack with the highest 'profit per weight' item out of knapsack
+     * [Mutation]
+     * <br> -- [Ruin-Recreate] general approach --
+     * .....................
      * <p> [Instruction] please put the index of mutation or ruin-recreate options you want to apply in the multimeme
      * memetic algorithm in the brackets below
      * <br> [Threat] please put more than 2 options to enable a mutation of this meme; putting only 1 option in the
      * bracket means the way of mutation or ruin-recreate is fixed throughout the run
      */
-    public static int[] MUTATION_OPTIONS_TO_USE = {0, 4, 5, 7, 12};
+    public static int[] MUTATION_OPTIONS_TO_USE = {0, 4, 5, 7, 12, 13, 14};
     /**
      * Intensity of Mutation options to use
      * <p> 0 : mutation or ruin_recreate for 1 times

@@ -301,8 +301,8 @@ public class MultimemeComponent {
             case 10 -> new ReplaceLowestWeightWithHighest();
             case 11 -> new ReplaceRandomWithHighestWeight();
             case 12 -> new ReplaceRandomWithLowestWeight();
-            // TODO: HINT: a swap of the largest selected item with a smallest item that was not selected
-            // TODO: THINK OF: lowest weight / highest value per weight
+            case 13 -> new ReplaceLowestVPWWithHighest();
+            case 14 -> new ReplaceRandomWithHighestVPW();
             // TODO: more ruinrecreate options
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
