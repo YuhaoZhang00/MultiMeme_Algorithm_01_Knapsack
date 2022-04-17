@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class RMHC_IE extends LocalSearch {
     @Override
-    public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+    public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         int i = rnd.nextInt(problem.getNumOfItems());
@@ -23,8 +23,9 @@ public class RMHC_IE extends LocalSearch {
         chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
         double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         if (neighborObjectiveValue >= currentObjectiveValue) {
-            return;
+            return true;
         }
         chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
+        return true;
     }
 }

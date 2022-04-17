@@ -209,8 +209,8 @@ public class MultimemeComponent {
     }
 
     /**
-     * Mutation or Ruin-Recreate
-     * <p> Applies the given child's Mutation or Ruin-Recreate method with the Intensity of Mutation in its memeplex
+     * Mutation or Ruin-Recreate with Intensity of Mutation
+     * <p> Applies the given child's Mutation or Ruin-Recreate method for Intensity of Mutation times
      */
     public void applyMutationOrRuinRecreateWithIoM(int idChild) throws ExecutionControl.NotImplementedException {
         int idIoM = m_populationChildren.getMemeplex(idChild).getIoMOption();
@@ -245,8 +245,10 @@ public class MultimemeComponent {
     }
 
     /**
-     * Local Search
-     * <p> Applies the given child's Local Search method with the Depth of Search in its memeplex
+     * Local Search with Depth of Search
+     * <p> Applies the given child's Local Search method for Depth of Search times. For every Local Search algorithms
+     * except {@code RMHC}, if there is no improvement in a pass (which means there will not be any improvement in
+     * following passes), the process will be terminated to safe computational cost
      */
     public void applyLocalSearchWithDoS(int idChild) throws ExecutionControl.NotImplementedException {
         int idDoS = m_populationChildren.getMemeplex(idChild).getDoSOption();
@@ -254,7 +256,9 @@ public class MultimemeComponent {
         int idLocalSearch = m_populationChildren.getMemeplex(idChild).getLocalSearchOption();
         LocalSearch localSearch = getLocalSearchOnId(idLocalSearch);
         for (int i = 0; i < depthOfSearch; i++) {
-            localSearch.applyLocalSearch(m_rnd, m_problem, m_populationChildren, this, idChild);
+            if (!localSearch.applyLocalSearch(m_rnd, m_problem, m_populationChildren, this, idChild)) {
+                break;
+            }
         }
     }
 
@@ -337,6 +341,7 @@ public class MultimemeComponent {
             case 13 -> new ReplaceLowestVPWWithHighest();
             case 14 -> new ReplaceRandomWithHighestVPW();
             // TODO: more ruinrecreate options
+            // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
@@ -374,7 +379,7 @@ public class MultimemeComponent {
             case 10 -> new LeastImprovement_OI();
             case 11 -> new LeastImprovement_IE();
             // TODO: more local search options
-            // TODO: for DB/GA/SA/LI HC If there is no improvement in a pass, the algorithm should be terminated.
+            // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
         };
     }

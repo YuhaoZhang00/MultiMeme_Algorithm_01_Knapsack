@@ -13,8 +13,8 @@ import java.util.Random;
  */
 public class LeastImprovement_OI extends LocalSearch {
     @Override
-    public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
-                                 MultimemeComponent algorithm, int idChild) {
+    public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+                                    MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
         double currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
@@ -31,6 +31,8 @@ public class LeastImprovement_OI extends LocalSearch {
         }
         if (bestIndex != -1) {
             chromosomeChild.set(bestIndex, (chromosomeChild.get(bestIndex) == 0) ? 1 : 0);
+            return true;
         }
+        return false;
     }
 }

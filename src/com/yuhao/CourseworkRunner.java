@@ -38,8 +38,6 @@ import static com.yuhao.config.Constant.*;
  */
 public class CourseworkRunner {
 
-    // TODO: delta evaluation
-
     public static void main(String[] args) {
         try {
             MultimemeComponent algorithm = new MultimemeComponent();

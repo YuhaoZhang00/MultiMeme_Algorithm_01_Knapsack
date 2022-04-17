@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class SAHC_IE extends LocalSearch {
     @Override
-    public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+    public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
@@ -30,6 +30,8 @@ public class SAHC_IE extends LocalSearch {
         }
         if (bestIndex != -1) {
             chromosomeChild.set(bestIndex, (chromosomeChild.get(bestIndex) == 0) ? 1 : 0);
+            return true;
         }
+        return false;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class GAHC_IE extends LocalSearch {
     @Override
-    public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+    public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         int j = rnd.nextInt(problem.getNumOfItems());
@@ -25,10 +25,11 @@ public class GAHC_IE extends LocalSearch {
             chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
             double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue >= highestObjectiveValue) {
-                return;
+                return true;
             } else {
                 chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
             }
         }
+        return false;
     }
 }

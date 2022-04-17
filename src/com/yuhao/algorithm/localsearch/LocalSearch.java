@@ -7,6 +7,6 @@ import com.yuhao.data.Problem;
 import java.util.Random;
 
 public abstract class LocalSearch {
-    abstract public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
-                                          MultimemeComponent algorithm, int idChild);
+    abstract public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+                                             MultimemeComponent algorithm, int idChild);
 }

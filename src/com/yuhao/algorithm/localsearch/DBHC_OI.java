@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class DBHC_OI extends LocalSearch {
     @Override
-    public void applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
+    public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
                                  MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
@@ -31,15 +31,18 @@ public class DBHC_OI extends LocalSearch {
         }
 
         double highestObjectiveValue = algorithm.getObjectiveValue(false, idChild);
+        boolean isImprovement = false;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             int index = permutation.get(i);
             chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
             double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue > highestObjectiveValue) {
                 highestObjectiveValue = neighborObjectiveValue;
+                isImprovement = true;
             } else {
                 chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
             }
         }
+        return isImprovement;
     }
 }
