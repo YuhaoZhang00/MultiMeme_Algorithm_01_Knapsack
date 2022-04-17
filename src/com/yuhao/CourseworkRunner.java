@@ -62,7 +62,7 @@ public class CourseworkRunner {
                 // ----------------------------------------
 
                 // main loop
-                while (!algorithm.terminationCirteriaMet()) {
+                while (!algorithm.terminationCriteriaMet()) {
                     for (int i = 0; i < POPULATION_SIZE; i += 2) {
                         // apply tournament selection to parents
                         int idParent1 = algorithm.applyTournamentSelection();

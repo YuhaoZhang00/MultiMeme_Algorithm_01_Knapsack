@@ -21,7 +21,7 @@ public class MultimemeComponent {
     private Population m_populationParent;
     private Population m_populationChildren;
 
-    private int m_loopCount = 0;
+    private int m_loopCount;
 
     /**
      * NOTE: for test and printout use only
@@ -73,8 +73,6 @@ public class MultimemeComponent {
 
         m_loopCount = 0;
     }
-
-    // TODO: comments for methods (注意细节：比如crossover用的是哪一个parent的option等，可以参考CourseworkRunner的伪代码)
 
     private void assignParentChromosomeToChild(int idParent, int idChild) {
         LinkedList<Integer> chromosomeParent = m_populationParent.getIndividual(idParent);
@@ -156,11 +154,19 @@ public class MultimemeComponent {
         }
     }
 
-    public boolean terminationCirteriaMet() {
+    /**
+     * Returns {@code true} if termination criteria is met, {@code false} otherwise
+     */
+    public boolean terminationCriteriaMet() {
         m_loopCount++;
         return m_loopCount > NUMBER_OF_LOOPS;
     }
 
+    /**
+     * Tournament Selection
+     * <p> Applies Tournament Selection to the parents and select the parent with the highest objective value in a
+     * random {@code POPULATION_SIZE} number of parents. Returns the index of that parent.
+     */
     public int applyTournamentSelection() {
         int bestIndex = -1;
         double highestObjectiveValue = -Double.MAX_VALUE;
@@ -180,6 +186,11 @@ public class MultimemeComponent {
         return bestIndex;
     }
 
+    /**
+     * Crossover
+     * <p> Applies {@code Parent 1}'s crossover method to make a crossover between {@code Parent 1} and {@code Parent
+     * 2} to {@code Child 1} and {@code Child 2}
+     */
     public void applyCrossover(int idParent1, int idParent2, int idChild1, int idChild2)
             throws ExecutionControl.NotImplementedException {
         int idCrossover = m_populationParent.getMemeplex(idParent1).getCrossoverOption();
@@ -188,11 +199,19 @@ public class MultimemeComponent {
                 idChild1, idChild2);
     }
 
+    /**
+     * Simple Inheritance
+     * <p> Copies memeplex of {@code Parent 1} to {@code Child 1} and {@code Child 2}
+     */
     public void applyMemeticSimpleInheritance(int idParent1, int idChild1, int idChild2) {
         assignParentMemeplexToChild(idParent1, idChild1);
         assignParentMemeplexToChild(idParent1, idChild2);
     }
 
+    /**
+     * Mutation or Ruin-Recreate
+     * <p> Applies the given child's Mutation or Ruin-Recreate method with the Intensity of Mutation in its memeplex
+     */
     public void applyMutationOrRuinRecreateWithIoM(int idChild) throws ExecutionControl.NotImplementedException {
         int idIoM = m_populationChildren.getMemeplex(idChild).getIoMOption();
         int intensityOfMutation = getIoMOnId(idIoM);
@@ -203,6 +222,10 @@ public class MultimemeComponent {
         }
     }
 
+    /**
+     * Mutation of Memeplex
+     * <p> Applies a mutation of Memeplex to the given child based on {@code INNOVATION_RATE}
+     */
     public void applyMutationOfMemeplex(int idChild) {
         if (m_rnd.nextDouble() < INNOVATION_RATE) {
             m_populationChildren.getMemeplex(idChild).setAnotherRandomCrossoverOption();
@@ -221,6 +244,10 @@ public class MultimemeComponent {
         }
     }
 
+    /**
+     * Local Search
+     * <p> Applies the given child's Local Search method with the Depth of Search in its memeplex
+     */
     public void applyLocalSearchWithDoS(int idChild) throws ExecutionControl.NotImplementedException {
         int idDoS = m_populationChildren.getMemeplex(idChild).getDoSOption();
         int depthOfSearch = getDoSOnId(idDoS);
@@ -274,6 +301,9 @@ public class MultimemeComponent {
         }
     }
 
+    /**
+     * returns the crossover algorithm based on id in memeplex
+     */
     private Crossover getCrossoverOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new OnePTX();
@@ -286,6 +316,9 @@ public class MultimemeComponent {
         };
     }
 
+    /**
+     * returns the mutation or ruin-recreate algorithm based on id in memeplex
+     */
     private MutationRuinRecreate getMutationOrRuinRecreateOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new BitFlip();
@@ -308,6 +341,9 @@ public class MultimemeComponent {
         };
     }
 
+    /**
+     * returns the IoM based on id in memeplex
+     */
     private int getIoMOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> 1;
@@ -320,6 +356,9 @@ public class MultimemeComponent {
         };
     }
 
+    /**
+     * returns the local search algorithm based on id in memeplex
+     */
     private LocalSearch getLocalSearchOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> new RMHC_OI();
@@ -340,6 +379,9 @@ public class MultimemeComponent {
         };
     }
 
+    /**
+     * returns the DoS based on id in memeplex
+     */
     private int getDoSOnId(int id) throws ExecutionControl.NotImplementedException {
         return switch (id) {
             case 0 -> 1;
