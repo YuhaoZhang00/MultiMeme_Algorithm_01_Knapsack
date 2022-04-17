@@ -6,7 +6,7 @@
 
 1. Modify configurations in `\src\com\yuhao\config\Constant.java`
     - put the input instance file in correct place (e.g. `\resource\test_instance.txt`) and configure the path to the
-      input file and output file
+      input file and output folder
     - configure number of trials, random seeds to use, etc.
     - do parameter tuning (e.g. innovation rate, crossover operator to use, etc.)
     - **detailed instruction of parameters can be found in `Constant` class**
