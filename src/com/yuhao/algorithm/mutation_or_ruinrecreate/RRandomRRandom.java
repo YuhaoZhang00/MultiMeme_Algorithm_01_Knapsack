@@ -21,7 +21,17 @@ public class RRandomRRandom extends MutationRuinRecreate {
         // ruin & recreate (at the same time)
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             if (rnd.nextDouble() < ruinProbability) {
-                chromosomeChild.set(i, (rnd.nextDouble() < 0.5) ? 0 : 1);
+                if (rnd.nextDouble() < 0.5) {
+                    if (chromosomeChild.get(i) == 1) {
+                        chromosomeChild.set(i, 0);
+                        populationChildren.changeIndividualInfoExcludeItem(idChild, i);
+                    }
+                } else {
+                    if (chromosomeChild.get(i) == 0) {
+                        chromosomeChild.set(i, 1);
+                        populationChildren.changeIndividualInfoIncludeItem(idChild, i);
+                    }
+                }
             }
         }
     }

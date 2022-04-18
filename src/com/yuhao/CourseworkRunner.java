@@ -56,7 +56,7 @@ public class CourseworkRunner {
                 }
 
                 // ----------------------------------------
-//            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+//                testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
                 // ----------------------------------------
 
                 // main loop
@@ -116,7 +116,7 @@ public class CourseworkRunner {
                 }
 
                 // ----------------------------------------
-//            testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
+//                testIndividualGenerationAndObjectiveValue(algorithm); // for test use only
                 showBestSolutionPerTrial(l, algorithm);
                 // ----------------------------------------
 
@@ -171,6 +171,9 @@ public class CourseworkRunner {
                 System.out.print(allele);
             }
             System.out.print(" - ");
+            System.out.print(populationParent.getIndividualTotalProfit(i) + " ");
+            System.out.print(populationParent.getIndividualTotalWeight(i) + " ");
+            System.out.print("- ");
             Memeplex m = populationParent.getMemeplex(i);
             System.out.print(m.getCrossoverOption() + " ");
             System.out.print(m.getMutationOption() + " ");
@@ -179,21 +182,28 @@ public class CourseworkRunner {
             System.out.print(m.getDoSOption() + " ");
             System.out.println("- " + algorithm.getObjectiveValue(true, i));
         }
-//        System.out.println("---populationChildren---");
-//        for (int i = 0; i < POPULATION_SIZE; i++) {
-//            System.out.print(i + " : ");
-//            for (int allele : populationChildren.getIndividual(i)) {
-//                System.out.print(allele);
-//            }
-//            System.out.print(" - ");
-//            Memeplex m = populationChildren.getMemeplex(i);
-//            System.out.print(m.getCrossoverOption() + " ");
-//            System.out.print(m.getMutationOption() + " ");
-//            System.out.print(m.getIoMOption() + " ");
-//            System.out.print(m.getLocalSearchOption() + " ");
-//            System.out.print(m.getDoSOption() + " ");
-//            System.out.println("- " + algorithm.getObjectiveValue(false, i));
-//        }
+        System.out.println("---populationChildren---");
+        for (int i = 0; i < POPULATION_SIZE; i++) {
+            if (i < 10) {
+                System.out.print(" " + i + " : ");
+            } else {
+                System.out.print(i + " : ");
+            }
+            for (int allele : populationChildren.getIndividual(i)) {
+                System.out.print(allele);
+            }
+            System.out.print(" - ");
+            System.out.print(populationChildren.getIndividualTotalProfit(i) + " ");
+            System.out.print(populationChildren.getIndividualTotalWeight(i) + " ");
+            System.out.print("- ");
+            Memeplex m = populationChildren.getMemeplex(i);
+            System.out.print(m.getCrossoverOption() + " ");
+            System.out.print(m.getMutationOption() + " ");
+            System.out.print(m.getIoMOption() + " ");
+            System.out.print(m.getLocalSearchOption() + " ");
+            System.out.print(m.getDoSOption() + " ");
+            System.out.println("- " + algorithm.getObjectiveValue(false, i));
+        }
         System.out.println("===end===");
     }
 }

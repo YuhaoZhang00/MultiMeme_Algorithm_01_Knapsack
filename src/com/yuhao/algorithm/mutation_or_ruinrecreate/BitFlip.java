@@ -15,6 +15,12 @@ public class BitFlip extends MutationRuinRecreate {
     public void applyMutationOrRuinRecreate(Random rnd, Problem problem, Population populationChildren, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
         int i = rnd.nextInt(problem.getNumOfItems());
-        chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
+        if (chromosomeChild.get(i) == 0) {
+            chromosomeChild.set(i, 1);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, i);
+        } else {
+            chromosomeChild.set(i, 0);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, i);
+        }
     }
 }

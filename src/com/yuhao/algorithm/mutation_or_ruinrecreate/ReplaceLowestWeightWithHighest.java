@@ -33,6 +33,8 @@ public class ReplaceLowestWeightWithHighest extends MutationRuinRecreate {
         if (lowestWeightInIndex != -1 && highestWeightOutIndex != -1) {
             chromosomeChild.set(lowestWeightInIndex, 0);
             chromosomeChild.set(highestWeightOutIndex, 1);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, lowestWeightInIndex);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, highestWeightOutIndex);
         }
     }
 }

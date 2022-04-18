@@ -34,7 +34,7 @@ public class RRandomRLowestWeight extends MutationRuinRecreate {
 
         double ruinProbability = rnd.nextDouble(MAXIMUM_RR_PERCENTAGE);
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
-        PriorityQueue<Entry> itemsToRuinWithProfit = new PriorityQueue<>();
+        PriorityQueue<Entry> itemsToRuinWithWeight = new PriorityQueue<>();
         int n = 0;
 
         // ruin
@@ -42,15 +42,17 @@ public class RRandomRLowestWeight extends MutationRuinRecreate {
             if (rnd.nextDouble() < ruinProbability) {
                 if (chromosomeChild.get(i) == 1) {
                     chromosomeChild.set(i, 0);
+                    populationChildren.changeIndividualInfoExcludeItem(idChild, i);
                     n++;
                 }
-                itemsToRuinWithProfit.add(new Entry(i, problem.getWeight(i)));
+                itemsToRuinWithWeight.add(new Entry(i, problem.getWeight(i)));
             }
         }
 
         // recreate
         for (int i = 0; i < n; i++) {
-            chromosomeChild.set(itemsToRuinWithProfit.poll().m_index, 1);
+            chromosomeChild.set(itemsToRuinWithWeight.peek().m_index, 1);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, itemsToRuinWithWeight.poll().m_index);
         }
     }
 }

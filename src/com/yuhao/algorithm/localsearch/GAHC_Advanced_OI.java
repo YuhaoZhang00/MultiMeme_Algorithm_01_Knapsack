@@ -23,13 +23,25 @@ public class GAHC_Advanced_OI extends LocalSearch {
         boolean isImprovement = false;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             int index = (i + j) % problem.getNumOfItems();
-            chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
+            if (chromosomeChild.get(index) == 0) {
+                chromosomeChild.set(index, 1);
+                populationChildren.changeIndividualInfoIncludeItem(idChild, index);
+            } else {
+                chromosomeChild.set(index, 0);
+                populationChildren.changeIndividualInfoExcludeItem(idChild, index);
+            }
             double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue > highestObjectiveValue) {
                 highestObjectiveValue = neighborObjectiveValue;
                 isImprovement = true;
             } else {
-                chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
+                if (chromosomeChild.get(index) == 0) {
+                    chromosomeChild.set(index, 1);
+                    populationChildren.changeIndividualInfoIncludeItem(idChild, index);
+                } else {
+                    chromosomeChild.set(index, 0);
+                    populationChildren.changeIndividualInfoExcludeItem(idChild, index);
+                }
             }
         }
         return isImprovement;

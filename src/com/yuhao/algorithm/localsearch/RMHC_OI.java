@@ -20,12 +20,24 @@ public class RMHC_OI extends LocalSearch {
 
         double currentObjectiveValue = algorithm.getObjectiveValue(false, idChild);
 
-        chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
+        if (chromosomeChild.get(i) == 0) {
+            chromosomeChild.set(i, 1);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, i);
+        } else {
+            chromosomeChild.set(i, 0);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, i);
+        }
         double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
         if (neighborObjectiveValue > currentObjectiveValue) {
             return true;
         }
-        chromosomeChild.set(i, (chromosomeChild.get(i) == 0) ? 1 : 0);
+        if (chromosomeChild.get(i) == 0) {
+            chromosomeChild.set(i, 1);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, i);
+        } else {
+            chromosomeChild.set(i, 0);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, i);
+        }
         return true;
     }
 }

@@ -33,6 +33,8 @@ public class ReplaceHighestProfitWithHighest extends MutationRuinRecreate {
         if (highestProfitInIndex != -1 && highestProfitOutIndex != -1) {
             chromosomeChild.set(highestProfitInIndex, 0);
             chromosomeChild.set(highestProfitOutIndex, 1);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, highestProfitInIndex);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, highestProfitOutIndex);
         }
     }
 }

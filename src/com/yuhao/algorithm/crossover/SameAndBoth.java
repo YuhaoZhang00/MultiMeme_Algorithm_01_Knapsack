@@ -26,5 +26,7 @@ public class SameAndBoth extends Crossover {
 
         populationChildren.setIndividual(idChild1, chromosomeChild1);
         populationChildren.setIndividual(idChild2, chromosomeChild2);
+        populationChildren.changeIndividualInfoRecalculate(idChild1);
+        populationChildren.changeIndividualInfoRecalculate(idChild2);
     }
 }

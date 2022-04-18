@@ -30,8 +30,11 @@ public class ReplaceRandomWithHighestProfit extends MutationRuinRecreate {
         }
 
         if (itemsInKnapsack.size() != 0 && highestProfitOutIndex != -1) {
-            chromosomeChild.set(itemsInKnapsack.get(rnd.nextInt(itemsInKnapsack.size())), 0);
+            int inIndex = itemsInKnapsack.get(rnd.nextInt(itemsInKnapsack.size()));
+            chromosomeChild.set(inIndex, 0);
             chromosomeChild.set(highestProfitOutIndex, 1);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, inIndex);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, highestProfitOutIndex);
         }
     }
 }

@@ -17,7 +17,7 @@ import java.util.Random;
 public class DBHC_IE extends LocalSearch {
     @Override
     public boolean applyLocalSearch(Random rnd, Problem problem, Population populationChildren,
-                                 MultimemeComponent algorithm, int idChild) {
+                                    MultimemeComponent algorithm, int idChild) {
         LinkedList<Integer> chromosomeChild = populationChildren.getIndividual(idChild);
 
         // create a random permutation
@@ -34,13 +34,25 @@ public class DBHC_IE extends LocalSearch {
         boolean isImprovement = false;
         for (int i = 0; i < problem.getNumOfItems(); i++) {
             int index = permutation.get(i);
-            chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
+            if (chromosomeChild.get(index) == 0) {
+                chromosomeChild.set(index, 1);
+                populationChildren.changeIndividualInfoIncludeItem(idChild, index);
+            } else {
+                chromosomeChild.set(index, 0);
+                populationChildren.changeIndividualInfoExcludeItem(idChild, index);
+            }
             double neighborObjectiveValue = algorithm.getObjectiveValue(false, idChild);
             if (neighborObjectiveValue >= highestObjectiveValue) {
                 highestObjectiveValue = neighborObjectiveValue;
                 isImprovement = true;
             } else {
-                chromosomeChild.set(index, (chromosomeChild.get(index) == 0) ? 1 : 0);
+                if (chromosomeChild.get(index) == 0) {
+                    chromosomeChild.set(index, 1);
+                    populationChildren.changeIndividualInfoIncludeItem(idChild, index);
+                } else {
+                    chromosomeChild.set(index, 0);
+                    populationChildren.changeIndividualInfoExcludeItem(idChild, index);
+                }
             }
         }
         return isImprovement;

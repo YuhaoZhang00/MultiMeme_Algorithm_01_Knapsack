@@ -34,6 +34,8 @@ public class ReplaceLowestVPWWithHighest extends MutationRuinRecreate {
         if (lowestVPWInIndex != -1 && highestVPWOutIndex != -1) {
             chromosomeChild.set(lowestVPWInIndex, 0);
             chromosomeChild.set(highestVPWOutIndex, 1);
+            populationChildren.changeIndividualInfoExcludeItem(idChild, lowestVPWInIndex);
+            populationChildren.changeIndividualInfoIncludeItem(idChild, highestVPWOutIndex);
         }
     }
 }

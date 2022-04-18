@@ -66,10 +66,10 @@ public class MultimemeComponent {
                 infoFromFile.get(3));
 
         // parents are initialised with random chromosome and memeplex
-        m_populationParent = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), true);
+        m_populationParent = new Population(m_rnd, m_problem, true);
 
         // children are initialised with empty chromosome and memeplex
-        m_populationChildren = new Population(m_rnd, infoFromFile.get(0).get(0).intValue(), false);
+        m_populationChildren = new Population(m_rnd, m_problem, false);
 
         m_loopCount = 0;
     }
@@ -88,6 +88,16 @@ public class MultimemeComponent {
         for (int i = 0; i < m_problem.getNumOfItems(); i++) {
             chromosomeParent.set(i, chromosomeChild.get(i));
         }
+    }
+
+    private void assignParentInfoToChild(int idParent, int idChild) {
+        m_populationChildren.setIndividualTotalProfit(idChild, m_populationParent.getIndividualTotalProfit(idParent));
+        m_populationChildren.setIndividualTotalWeight(idChild, m_populationParent.getIndividualTotalWeight(idParent));
+    }
+
+    private void assignChildInfoToParent(int idParent, int idChild) {
+        m_populationParent.setIndividualTotalProfit(idParent, m_populationChildren.getIndividualTotalProfit(idChild));
+        m_populationParent.setIndividualTotalWeight(idParent, m_populationChildren.getIndividualTotalWeight(idChild));
     }
 
     private void assignParentMemeplexToChild(int idParent, int idChild) {
@@ -129,20 +139,14 @@ public class MultimemeComponent {
      * </pre>
      */
     public double getObjectiveValue(boolean isParent, int individualId) {
-        // objective function : f(s) = totalProfit
-        LinkedList<Integer> individual;
+        double totalProfit;
+        double totalWeight;
         if (isParent) {
-            individual = m_populationParent.getIndividual(individualId);
+            totalProfit = m_populationParent.getIndividualTotalProfit(individualId);
+            totalWeight = m_populationParent.getIndividualTotalWeight(individualId);
         } else {
-            individual = m_populationChildren.getIndividual(individualId);
-        }
-        double totalWeight = 0;
-        double totalProfit = 0;
-        for (int i = 0; i < m_problem.getNumOfItems(); i++) {
-            if (individual.get(i) == 1) {
-                totalWeight += m_problem.getWeight(i);
-                totalProfit += m_problem.getProfit(i);
-            }
+            totalProfit = m_populationChildren.getIndividualTotalProfit(individualId);
+            totalWeight = m_populationChildren.getIndividualTotalWeight(individualId);
         }
         if (totalWeight <= m_problem.getKnapsackCapacity()) {
             // if not exceed bin capacity : f(s) = totalProfit
@@ -295,12 +299,14 @@ public class MultimemeComponent {
         // if the best solution is in parent population, replace the worst in children with it
         if (highestObjectiveValueParent > highestObjectiveValueChildren) {
             assignParentChromosomeToChild(bestIndexParent, worstIndexChildren);
+            assignParentInfoToChild(bestIndexParent, worstIndexChildren);
             assignParentMemeplexToChild(bestIndexParent, worstIndexChildren);
         }
 
         // do the replacement, i.e. replace the parent with the children
         for (int i = 0; i < POPULATION_SIZE; i++) {
             assignChildChromosomeToParent(i, i);
+            assignChildInfoToParent(i, i);
             assignChildMemeplexToParent(i, i);
         }
     }
@@ -344,7 +350,6 @@ public class MultimemeComponent {
             case 16 -> new RRandomRHighestProfit();
             case 17 -> new RRandomRLowestWeight();
             case 18 -> new RRandomRHighestVPW();
-            // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
     }
@@ -381,7 +386,6 @@ public class MultimemeComponent {
             case 9 -> new GAHC_Advanced_IE();
             case 10 -> new LeastImprovement_OI();
             case 11 -> new LeastImprovement_IE();
-            // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
         };
     }
