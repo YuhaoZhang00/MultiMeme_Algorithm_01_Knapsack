@@ -6,7 +6,7 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-    public static String FILE_TO_READ = "resource/otherInstances/2614.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2852.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
@@ -29,7 +29,7 @@ public class Constant {
      * FILE_TO_READ}
      * <br> [Threat] Please note that the files in the folder with the same name will be overwritten
      */
-    public static String INSTANCE_NAME = "";
+    public static String INSTANCE_NAME = "o";
     /**
      * max number of entries (i.e. pairs of best/worst objective values) to record in the output file
      * <p> [Instruction] an integer number, should be less than or equal to {@code NUMBER_OF_LOOPS}
@@ -39,7 +39,7 @@ public class Constant {
 
     /**
      * whether to use a certain seed to run the trials
-     * <p> [Instruction] 'true' means use a certain seed, 'false' means use a random seed
+     * <p> [Instruction] {@code true} means use a certain seed, {@code false} means use a random seed
      */
     public static boolean IS_USE_SEED = true;
     /**
@@ -50,12 +50,12 @@ public class Constant {
 
     /**
      * number of trials to perform
-     * <p> [Instruction] suggested value : 5
+     * <p> [Instruction] an integer number
      */
     public static int NUMBER_OF_TRIALS = 10;
     /**
      * number of loops to perform per trial
-     * <p> [Instruction] suggested value : 300
+     * <p> [Instruction] an integer number
      */
     public static int NUMBER_OF_LOOPS = 300;
 
@@ -65,7 +65,7 @@ public class Constant {
      * <br> [Threat] please make it an EVEN NUMBER, otherwise there will be {@code IndexOutOfBoundsException} when
      * applying crossover
      */
-    public static int POPULATION_SIZE = 10;
+    public static int POPULATION_SIZE = 16;
     /**
      * the tournament size when applying tournament selection on parents
      * <p> [Instruction] an integer indicating the tour size, should be less than {@code POPULATION_SIZE}
