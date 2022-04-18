@@ -340,7 +340,10 @@ public class MultimemeComponent {
             case 12 -> new ReplaceRandomWithLowestWeight();
             case 13 -> new ReplaceLowestVPWWithHighest();
             case 14 -> new ReplaceRandomWithHighestVPW();
-            // TODO: more ruinrecreate options
+            case 15 -> new RRandomRRandom();
+            case 16 -> new RRandomRHighestProfit();
+            case 17 -> new RRandomRLowestWeight();
+            case 18 -> new RRandomRHighestVPW();
             // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid mutation id");
         };
@@ -378,7 +381,6 @@ public class MultimemeComponent {
             case 9 -> new GAHC_Advanced_IE();
             case 10 -> new LeastImprovement_OI();
             case 11 -> new LeastImprovement_IE();
-            // TODO: more local search options
             // TODO: delta evaluation
             default -> throw new ExecutionControl.NotImplementedException("Invalid local search id");
         };

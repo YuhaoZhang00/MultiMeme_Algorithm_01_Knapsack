@@ -77,7 +77,7 @@ public class CourseworkRunner {
                             idParent2 = temp;
                         }
 
-                        // apply crossover with IoM
+                        // apply crossover
                         algorithm.applyCrossover(idParent1, idParent2, idChild1, idChild2);
 
                         // apply memetic simple inheritance

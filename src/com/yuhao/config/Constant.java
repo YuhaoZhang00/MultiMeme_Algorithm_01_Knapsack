@@ -6,7 +6,7 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-    public static String FILE_TO_READ = "resource/otherInstances/2852-f.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2614.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
@@ -117,14 +117,23 @@ public class Constant {
      * out of knapsack [Mutation]
      * <br> 14 : Replaces a random item in the knapsack with the highest 'profit per weight' item out of knapsack
      * [Mutation]
-     * <br> -- [Ruin-Recreate] general approach --
-     * .....................
+     * <br> -- [Ruin-Recreate] --
+     * <br> 15 : Random Ruin and Random Recreate [Ruin-Recreate]
+     * <br> 16 : Random Ruin and Recreate by including highest profit items [Ruin-Recreate]
+     * <br> 17 : Random Ruin and Recreate by including lowest weight items [Ruin-Recreate]
+     * <br> 18 : Random Ruin and Recreate by including highest 'profit per weight' items [Ruin-Recreate]
      * <p> [Instruction] please put the index of mutation or ruin-recreate options you want to apply in the multimeme
      * memetic algorithm in the brackets below
      * <br> [Threat] please put more than 2 options to enable a mutation of this meme; putting only 1 option in the
      * bracket means the way of mutation or ruin-recreate is fixed throughout the run
      */
-    public static int[] MUTATION_OPTIONS_TO_USE = {0, 4, 5, 7, 12, 13, 14};
+    public static int[] MUTATION_OPTIONS_TO_USE = {0, 4, 5, 7, 12, 13, 14, 15, 16, 17, 18};
+    /**
+     * the maximum percentage of individuals a ruin-recreate method can ruin in a population, to avoid too much change
+     * of information in a population
+     * <p> [Instruction] an double number between 0 and 1
+     */
+    public static double MAXIMUM_RR_PERCENTAGE = 0.5;
     /**
      * Intensity of Mutation options to use
      * <p> 0 : mutation or ruin_recreate for 1 times
@@ -151,8 +160,8 @@ public class Constant {
      * moves)
      * <br> 7 : GAHC_IE (Gradient Ascent / Next Ascent / First Improvement Hill Climbing accepting Improving or Equal
      * moves)
-     * <br> 8 : GAHC_Advanced_OI (an advanced First Improvement Hill Climbing accepting Only Improving moves)
-     * <br> 9 : GAHC_Advanced_IE (an advanced First Improvement Hill Climbing accepting Improving or Equal moves)
+     * <br> 8 : GAHC_Advanced_OI (a First Improvement Hill Climbing accepting Only Improving moves through a loop)
+     * <br> 9 : GAHC_Advanced_IE (a First Improvement Hill Climbing accepting Improving or Equal moves through a loop)
      * <br> 10 : LeastImprovement_OI (Least Improvement Hill Climbing accepting Only Improving moves)
      * <br> 11 : LeastImprovement_IE (Least Improvement Hill Climbing accepting Improving or Equal moves)
      * <p> [Instruction] please put the index of local search options you want to apply in the multimeme memetic
