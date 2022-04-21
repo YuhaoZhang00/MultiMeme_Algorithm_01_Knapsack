@@ -6,14 +6,14 @@ public class Constant {
      * <p> [Instruction] a string of the relative path / absolute path of the instance file
      * <br> [Threat] invalid path will result in {@code FileNotFoundException}
      */
-//    public static String FILE_TO_READ = "resource/otherInstances/2461.txt";
+    public static String FILE_TO_READ = "resource/otherInstances/2461.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test1_4_20.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test2_10_269.txt";
 //    public static String FILE_TO_READ = "resource/initialTestInstances/test3_20_879.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden1_5_80.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden2_7_50.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden3_10_60.txt";
-    public static String FILE_TO_READ = "resource/hiddenInstances/hidden4_15_375.txt";
+//    public static String FILE_TO_READ = "resource/hiddenInstances/hidden4_15_375.txt";
 //    public static String FILE_TO_READ = "resource/hiddenInstances/hidden5_23_10000.txt";
 
     /**

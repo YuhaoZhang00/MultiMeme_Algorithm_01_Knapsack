@@ -10,6 +10,7 @@ import com.yuhao.utils.MyFileReader;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -150,11 +151,13 @@ public class MultimemeComponent {
         }
         if (totalWeight <= m_problem.getKnapsackCapacity()) {
             // if not exceed bin capacity : f(s) = totalProfit
-            return totalProfit;
+            return (double) Math.round(totalProfit * 100000000) / 100000000;
         } else {
             // if exceed bin capacity :
             // penalty : f (s)= min(profit) / (totalWeight - knapsackCapacity + 1)
-            return (m_problem.getMinProfit() / (totalWeight - m_problem.getKnapsackCapacity() + 1));
+            return (double) Math.round(
+                    (m_problem.getMinProfit() / (totalWeight - m_problem.getKnapsackCapacity() + 1)) * 100000000) /
+                    100000000;
         }
     }
 
