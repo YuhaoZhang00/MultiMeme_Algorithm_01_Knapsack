@@ -1,6 +1,6 @@
 ## My Multimeme Memetic Algorithm (MMA) for solving 0-1 Knapsack Problem
 
-### COMP2001 AIM Coursework (2122SPR @ UoN, Module Convenor: [Ender ÖZCAN](http://www.cs.nott.ac.uk/~pszeo/)) by Yuhao Zhang
+#### by Yuhao Zhang, 2122SPR @ UoN
 
 #### How to run the algorithm
 
